@@ -13,7 +13,7 @@ language.
 - Maven 3.3.3
 
 # Usage
-- mvn clean compile package
+- mvn clean compile test package
 - cd target
 - java -jar language-0.1.0.jar 
 
