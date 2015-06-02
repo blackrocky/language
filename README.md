@@ -8,3 +8,13 @@ GAELIC.9, ENGLISH.1 to ENGLISH.6 and so on.
 
 Given a file TEXT.txt in the same format but of unknown origin, Develop a program to identify its 
 language.
+
+# software needed
+- JDK 7
+- Maven 3.3.3
+
+# usage
+mvn clean compile package
+cd target
+java -jar language-0.1.0.jar 
+
