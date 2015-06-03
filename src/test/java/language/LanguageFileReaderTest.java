@@ -1,6 +1,5 @@
 package language;
 
-import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -30,6 +29,6 @@ public class LanguageFileReaderTest {
         assertThat(lines.contains("tomorrow, hmm...."), is(true));
         assertThat(lines.contains("I wonder what will happen"), is(true));
 
-        assertThat(languageFile.getLanguage(), is("ENGLISH"));
+        assertThat(languageFile.getFileName(), is("ENGLISH"));
     }
 }

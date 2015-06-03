@@ -4,19 +4,19 @@ import java.util.List;
 
 public class LanguageFile {
     private List<String> lines;
-    private String language;
+    private String fileName;
     // TODO private Set<String> words;
 
-    public LanguageFile(List<String> lines, String language) {
+    public LanguageFile(List<String> lines, String fileName) {
         this.lines = lines;
-        this.language = language;
+        this.fileName = fileName;
     }
 
     public List<String> getLines() {
         return lines;
     }
 
-    public String getLanguage() {
-        return language;
+    public String getFileName() {
+        return fileName;
     }
 }
