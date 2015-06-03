@@ -14,11 +14,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class LanguageReader {
+    private static final Logger LOGGER = LoggerFactory.getLogger(LanguageReader.class);
+
     public static final String REGEX = "^[a-zA-Z \\.\\,\\;\\:]+$";
     public static final String CHAR_TO_GET_REGEX = "[^a-zA-Z ]";
     private Map<String, Set<String>> dictionary = new HashMap<>();
-    private static final Logger LOGGER = LoggerFactory.getLogger(LanguageReader.class);
-
 
     public void readAndStore(String pathStr) throws IOException {
         Path path = Paths.get(pathStr);
