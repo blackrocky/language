@@ -4,18 +4,18 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class LanguageReader {
-
-    public static final String ALLOWED_CHARS_REGEX = "[^a-zA-Z ]";
-    public static final String ALLOWED_PUNCTUATIONS = ".,;:";
+    public static final String REGEX = "^[a-zA-Z \\.\\,\\;\\:]+$";
+    public static final String CHAR_TO_GET_REGEX = "[^a-zA-Z ]";
     private Map<String, Set<String>> dictionary = new HashMap<>();
     private static final Logger LOGGER = LoggerFactory.getLogger(LanguageReader.class);
 
@@ -23,12 +23,20 @@ public class LanguageReader {
     public void readAndStore(String pathStr) throws IOException {
         Path path = Paths.get(pathStr);
         List<String> lines = Files.readAllLines(path, Charset.defaultCharset());
-        String fileName = StringUtils.substringBefore(path.getFileName().toString(), ".");
-        LOGGER.debug("fileName {}", fileName);
+        LOGGER.debug("Reading file {}", path.getFileName().toString());
+
+        String language = StringUtils.substringBefore(path.getFileName().toString(), ".");
+        Pattern pattern = Pattern.compile(REGEX);
         for (String line : lines) {
-            LOGGER.debug("line = {}", line);
+            Matcher matcher = pattern.matcher(line);
+            LOGGER.trace("line = {}", line);
+            LOGGER.trace("matches {}", matcher.matches());
+
             if (StringUtils.isNotBlank(line)) {
-                lineToDictionary(line, fileName);
+                if (!matcher.matches()) {
+                    throw new IllegalStateException("File " + pathStr + " contains illegal characters");
+                }
+                lineToDictionary(line, language);
             }
         }
     }
@@ -37,7 +45,7 @@ public class LanguageReader {
         if (StringUtils.isBlank(line)) {
             throw new IllegalStateException();
         }
-        line = line.replaceAll(LanguageReader.ALLOWED_CHARS_REGEX, "");
+        line = StringUtils.lowerCase(line.replaceAll(LanguageReader.CHAR_TO_GET_REGEX, ""));
 
         String[] wordArray = StringUtils.split(line);
         Set<String> newWords = new HashSet<>(Arrays.asList(wordArray));
@@ -49,7 +57,7 @@ public class LanguageReader {
             currentWords.addAll(newWords);
         }
 
-        LOGGER.debug("dictionary {}", dictionary);
+        LOGGER.trace("dictionary {}", dictionary);
     }
 
     public Map<String, Set<String>> getDictionary() {

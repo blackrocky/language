@@ -41,7 +41,7 @@ public class LanguageReaderTest {
         assertThat(dictionary.size(), is(1));
         assertThat(dictionary.get(ENGLISH), notNullValue());
         assertThat(dictionary.get(ENGLISH).size(), is(2));
-        assertThat(dictionary.get(ENGLISH).contains("Hello"), is(true));
+        assertThat(dictionary.get(ENGLISH).contains("hello"), is(true));
         assertThat(dictionary.get(ENGLISH).contains("world") , is(true));
     }
 
@@ -54,7 +54,7 @@ public class LanguageReaderTest {
         Set<String> words = dictionary.get(ENGLISH);
         assertThat(words, notNullValue());
         assertThat(words.size(), is(7));
-        assertThat(words.contains("I"), is(true));
+        assertThat(words.contains("i"), is(true));
         assertThat(words.contains("wonder"), is(true));
         assertThat(words.contains("what"), is(true));
         assertThat(words.contains("will"), is(true));
@@ -65,29 +65,29 @@ public class LanguageReaderTest {
 
     @Test
     public void should_read_and_store_multiple_files_one_language() throws IOException {
-        languageReader.readAndStore("src/test/resources/languagefiles/ENGLISH.1");
         languageReader.readAndStore("src/test/resources/languagefiles/ENGLISH.2");
+        languageReader.readAndStore("src/test/resources/languagefiles/ENGLISH.3");
         Map<String, Set<String>> dictionary = languageReader.getDictionary();
         assertThat(dictionary, notNullValue());
         assertThat(dictionary.size(), is(1));
         Set<String> words = dictionary.get(ENGLISH);
         assertThat(words, notNullValue());
-        assertThat(words.size(), is(88));
-        assertThat(words.contains("I"), is(true));
+        assertThat(words.size(), is(92));
+        assertThat(words.contains("i"), is(true));
         assertThat(words.contains("wonder"), is(true));
         assertThat(words.contains("what"), is(true));
         assertThat(words.contains("will"), is(true));
         assertThat(words.contains("happen"), is(true));
         assertThat(words.contains("tomorrow"), is(true));
         assertThat(words.contains("hmm"), is(true));
-        assertThat(words.contains("Saint"), is(true));
-        assertThat(words.contains("Seiya"), is(true));
+        assertThat(words.contains("saint"), is(true));
+        assertThat(words.contains("seiya"), is(true));
     }
 
     @Test
     public void should_read_and_store_multiple_files_multiple_languages() throws IOException {
-        languageReader.readAndStore("src/test/resources/languagefiles/ENGLISH.1");
         languageReader.readAndStore("src/test/resources/languagefiles/ENGLISH.2");
+        languageReader.readAndStore("src/test/resources/languagefiles/ENGLISH.3");
         languageReader.readAndStore("src/test/resources/languagefiles/INDONESIAN.1");
         Map<String, Set<String>> dictionary = languageReader.getDictionary();
         assertThat(dictionary, notNullValue());
@@ -95,32 +95,29 @@ public class LanguageReaderTest {
 
         Set<String> englishWords = dictionary.get(ENGLISH);
         assertThat(englishWords, notNullValue());
-        assertThat(englishWords.size(), is(88));
-        assertThat(englishWords.contains("I"), is(true));
+        assertThat(englishWords.size(), is(92));
+        assertThat(englishWords.contains("i"), is(true));
         assertThat(englishWords.contains("wonder"), is(true));
         assertThat(englishWords.contains("what"), is(true));
         assertThat(englishWords.contains("will"), is(true));
         assertThat(englishWords.contains("happen"), is(true));
         assertThat(englishWords.contains("tomorrow"), is(true));
         assertThat(englishWords.contains("hmm"), is(true));
-        assertThat(englishWords.contains("Saint"), is(true));
-        assertThat(englishWords.contains("Seiya"), is(true));
+        assertThat(englishWords.contains("saint"), is(true));
+        assertThat(englishWords.contains("seiya"), is(true));
 
         Set<String> indonesianWords = dictionary.get(INDONESIAN);
         assertThat(indonesianWords, notNullValue());
-        assertThat(indonesianWords.size(), is(103));
-        assertThat(indonesianWords.contains("Sumber"), is(true));
-        assertThat(indonesianWords.contains("Bali"), is(true));
-        assertThat(indonesianWords.contains("Tanah"), is(true));
-        assertThat(indonesianWords.contains("Rot"), is(true));
-        assertThat(indonesianWords.contains("Lot"), is(true));
-        assertThat(indonesianWords.contains("KEMBARI"), is(true));
+        assertThat(indonesianWords.size(), is(89));
+        assertThat(indonesianWords.contains("bali"), is(true));
+        assertThat(indonesianWords.contains("tanah"), is(true));
+        assertThat(indonesianWords.contains("rot"), is(true));
+        assertThat(indonesianWords.contains("lot"), is(true));
+        assertThat(indonesianWords.contains("kembari"), is(true));
     }
 
-
-    @Test
-    public void should_remove_illegal_characters() {
-
-
+    @Test(expected = IllegalStateException.class)
+    public void should_return_exception_given_file_with_illegal_character() throws IOException {
+        languageReader.readAndStore("src/test/resources/languagefiles/ENGLISH.1");
     }
 }
