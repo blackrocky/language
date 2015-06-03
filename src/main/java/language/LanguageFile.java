@@ -5,6 +5,7 @@ import java.util.List;
 public class LanguageFile {
     private List<String> lines;
     private String language;
+    // TODO private Set<String> words;
 
     public LanguageFile(List<String> lines, String language) {
         this.lines = lines;
