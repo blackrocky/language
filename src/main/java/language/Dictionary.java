@@ -28,11 +28,7 @@ public class Dictionary {
 
     public void readAndStore(String pathStr) throws IOException {
         LanguageFile languageFile = languageFileReader.readAllLinesWithCharacterCheck(pathStr);
-//        Path path = Paths.get(pathStr);
-//        List<String> lines = Files.readAllLines(path, Charset.defaultCharset());
-//        LOGGER.debug("Reading file {}", path.getLanguage().toString());
-//
-//\\        String language = StringUtils.substringBefore(path.getLanguage().toString(), ".");
+
         Pattern pattern = Pattern.compile(LEGAL_CHARACTERS_REGEX);
         for (String line : languageFile.getLines()) {
             Matcher matcher = pattern.matcher(line);

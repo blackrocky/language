@@ -9,6 +9,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -25,11 +26,16 @@ public class Language {
 		LanguageFileReader languageFileReader = new LanguageFileReader();
 		LanguageFile languageFile = languageFileReader.readAllLinesWithCharacterCheck(pathStr);
 
+		Map<String, Integer> languageScore = new HashMap<>();
+
 		for (String line : languageFile.getLines()) {
 			LOGGER.debug("line = {}", line);
 
 			Map<String, Set<String>> dictionaryMap = dictionary.getDictionary();
-
+			for (Map.Entry<String, Set<String>> entry : dictionaryMap.entrySet()) {
+				LOGGER.debug("Checking {}", entry.getKey());
+				Set<String> words = entry.getValue();
+			}
 		}
 
 		return "";
