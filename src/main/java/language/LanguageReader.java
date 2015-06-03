@@ -27,7 +27,9 @@ public class LanguageReader {
         LOGGER.debug("fileName {}", fileName);
         for (String line : lines) {
             LOGGER.debug("line = {}", line);
-            lineToDictionary(line, fileName);
+            if (StringUtils.isNotBlank(line)) {
+                lineToDictionary(line, fileName);
+            }
         }
     }
 
