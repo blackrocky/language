@@ -9,7 +9,7 @@ Given a file TEXT.txt in the same format but of unknown origin, Develop a progra
 language.
 
 # Assumptions
-- Known language files have the language name for the filename and numbers as the extension eg. ENGLISH.1 ENGLISH.2 FRENCH.1 FRENCH.2
+- Known language files have the language name for the filename and numbers as the extension eg. ENGLISH.1 ENGLISH.2 FRENCH.1 FRENCH.2 would have 2 languages: ENGLISH and FRENCH
 - If there is not enough data to determine the language, then UNKNOWN should be returned
 
 # Software Needed
