@@ -2,8 +2,6 @@ package language;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Map;
@@ -13,30 +11,30 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
-public class LanguageReaderTest {
-    private LanguageReader languageReader;
+public class DictionaryTest {
+    private Dictionary dictionary;
     public static final String ENGLISH = "ENGLISH";
     public static final String INDONESIAN = "INDONESIAN";
 
     @Before
     public void setUp() {
-        languageReader = new LanguageReader();
+        dictionary = new Dictionary(new LanguageFileReader());
     }
 
     @Test(expected = IllegalStateException.class)
     public void should_throw_exeption_given_null_word() {
-        languageReader.lineToDictionary(null, ENGLISH);
+        dictionary.storeLineInDictionary(null, ENGLISH);
     }
 
     @Test(expected = IllegalStateException.class)
     public void should_throw_exeption_given_blank_word() {
-        languageReader.lineToDictionary("", ENGLISH);
+        dictionary.storeLineInDictionary("", ENGLISH);
     }
 
     @Test
     public void should_return_same_word_given_plain_word_input() {
-        languageReader.lineToDictionary("Hello world!", ENGLISH);
-        Map<String, Set<String>> dictionary = languageReader.getDictionary();
+        dictionary.storeLineInDictionary("Hello world!", ENGLISH);
+        Map<String, Set<String>> dictionary = this.dictionary.getDictionary();
         assertThat(dictionary, notNullValue());
         assertThat(dictionary.size(), is(1));
         assertThat(dictionary.get(ENGLISH), notNullValue());
@@ -47,8 +45,8 @@ public class LanguageReaderTest {
 
     @Test
     public void should_read_and_store_one_file() throws IOException {
-        languageReader.readAndStore("src/test/resources/languagefiles/ENGLISH.2");
-        Map<String, Set<String>> dictionary = languageReader.getDictionary();
+        dictionary.readAndStore("./src/test/resources/languagefiles/ENGLISH.2");
+        Map<String, Set<String>> dictionary = this.dictionary.getDictionary();
         assertThat(dictionary, notNullValue());
         assertThat(dictionary.size(), is(1));
         Set<String> words = dictionary.get(ENGLISH);
@@ -65,9 +63,9 @@ public class LanguageReaderTest {
 
     @Test
     public void should_read_and_store_multiple_files_one_language() throws IOException {
-        languageReader.readAndStore("src/test/resources/languagefiles/ENGLISH.2");
-        languageReader.readAndStore("src/test/resources/languagefiles/ENGLISH.3");
-        Map<String, Set<String>> dictionary = languageReader.getDictionary();
+        dictionary.readAndStore("./src/test/resources/languagefiles/ENGLISH.2");
+        dictionary.readAndStore("./src/test/resources/languagefiles/ENGLISH.3");
+        Map<String, Set<String>> dictionary = this.dictionary.getDictionary();
         assertThat(dictionary, notNullValue());
         assertThat(dictionary.size(), is(1));
         Set<String> words = dictionary.get(ENGLISH);
@@ -86,10 +84,10 @@ public class LanguageReaderTest {
 
     @Test
     public void should_read_and_store_multiple_files_multiple_languages() throws IOException {
-        languageReader.readAndStore("src/test/resources/languagefiles/ENGLISH.2");
-        languageReader.readAndStore("src/test/resources/languagefiles/ENGLISH.3");
-        languageReader.readAndStore("src/test/resources/languagefiles/INDONESIAN.1");
-        Map<String, Set<String>> dictionary = languageReader.getDictionary();
+        dictionary.readAndStore("./src/test/resources/languagefiles/ENGLISH.2");
+        dictionary.readAndStore("./src/test/resources/languagefiles/ENGLISH.3");
+        dictionary.readAndStore("./src/test/resources/languagefiles/INDONESIAN.1");
+        Map<String, Set<String>> dictionary = this.dictionary.getDictionary();
         assertThat(dictionary, notNullValue());
         assertThat(dictionary.size(), is(2));
 
@@ -118,6 +116,12 @@ public class LanguageReaderTest {
 
     @Test(expected = IllegalStateException.class)
     public void should_return_exception_given_file_with_illegal_character() throws IOException {
-        languageReader.readAndStore("src/test/resources/languagefiles/ENGLISH.1");
+        dictionary.readAndStore("./src/test/resources/languagefiles/ENGLISH.1");
     }
+
+    // TODO
+//    @Test
+//    public void should_read_all_files_in_directory() {
+//        dictionaryBuilder.readAndStore();
+//    }
 }

@@ -10,23 +10,35 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class Language {
 	private static final Logger LOGGER = LoggerFactory.getLogger(Language.class);
+	private Dictionary dictionary;
+
+	public Language(Dictionary dictionary) {
+		this.dictionary = dictionary;
+	}
 
 	public String determineLanguage(String pathStr) throws IOException {
-		Path path = Paths.get(pathStr);
-		List<String> lines = Files.readAllLines(path, Charset.defaultCharset());
-		LOGGER.debug("Reading file {}", path.getFileName().toString());
-		for (String line : lines) {
+		LanguageFileReader languageFileReader = new LanguageFileReader();
+		LanguageFile languageFile = languageFileReader.readAllLinesWithCharacterCheck(pathStr);
+
+		for (String line : languageFile.getLines()) {
 			LOGGER.debug("line = {}", line);
+
+			Map<String, Set<String>> dictionaryMap = dictionary.getDictionary();
+
 		}
 
 		return "";
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		LocalTime localTime = new LocalTime();
 		System.out.println("Hello world: " + localTime);
+
 	}
+
 }

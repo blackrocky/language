@@ -13,21 +13,28 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class LanguageReader {
-    private static final Logger LOGGER = LoggerFactory.getLogger(LanguageReader.class);
+public class Dictionary {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Dictionary.class);
 
-    public static final String REGEX = "^[a-zA-Z \\.\\,\\;\\:]+$";
-    public static final String CHAR_TO_GET_REGEX = "[^a-zA-Z ]";
+    public static final String LEGAL_CHARACTERS_REGEX = "^[a-zA-Z \\.\\,\\;\\:]+$";
+    public static final String NON_ALPHABET_AND_SPACE_REGEX = "[^a-zA-Z ]";
+
+    private LanguageFileReader languageFileReader;
     private Map<String, Set<String>> dictionary = new HashMap<>();
 
-    public void readAndStore(String pathStr) throws IOException {
-        Path path = Paths.get(pathStr);
-        List<String> lines = Files.readAllLines(path, Charset.defaultCharset());
-        LOGGER.debug("Reading file {}", path.getFileName().toString());
+    public Dictionary(LanguageFileReader languageFileReader) {
+        this.languageFileReader = languageFileReader;
+    }
 
-        String language = StringUtils.substringBefore(path.getFileName().toString(), ".");
-        Pattern pattern = Pattern.compile(REGEX);
-        for (String line : lines) {
+    public void readAndStore(String pathStr) throws IOException {
+        LanguageFile languageFile = languageFileReader.readAllLinesWithCharacterCheck(pathStr);
+//        Path path = Paths.get(pathStr);
+//        List<String> lines = Files.readAllLines(path, Charset.defaultCharset());
+//        LOGGER.debug("Reading file {}", path.getLanguage().toString());
+//
+//\\        String language = StringUtils.substringBefore(path.getLanguage().toString(), ".");
+        Pattern pattern = Pattern.compile(LEGAL_CHARACTERS_REGEX);
+        for (String line : languageFile.getLines()) {
             Matcher matcher = pattern.matcher(line);
             LOGGER.trace("line = {}", line);
             LOGGER.trace("matches {}", matcher.matches());
@@ -36,16 +43,16 @@ public class LanguageReader {
                 if (!matcher.matches()) {
                     throw new IllegalStateException("File " + pathStr + " contains illegal characters");
                 }
-                lineToDictionary(line, language);
+                storeLineInDictionary(line, languageFile.getLanguage());
             }
         }
     }
 
-    public void lineToDictionary(String line, String language) {
+    public void storeLineInDictionary(String line, String language) {
         if (StringUtils.isBlank(line)) {
             throw new IllegalStateException();
         }
-        line = StringUtils.lowerCase(line.replaceAll(LanguageReader.CHAR_TO_GET_REGEX, ""));
+        line = StringUtils.lowerCase(line.replaceAll(Dictionary.NON_ALPHABET_AND_SPACE_REGEX, ""));
 
         String[] wordArray = StringUtils.split(line);
         Set<String> newWords = new HashSet<>(Arrays.asList(wordArray));
