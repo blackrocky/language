@@ -22,7 +22,6 @@ public class LanguageTest {
     }
 
     @Test
-    @Ignore
     public void should_return_indonesian_given_text() throws IOException {
         String languageStr = language.determineLanguage("./src/test/resources/textfile/TEXT.txt");
         assertThat(languageStr, is("INDONESIAN"));

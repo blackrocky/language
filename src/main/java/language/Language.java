@@ -48,13 +48,13 @@ public class Language {
 		}
 		LOGGER.debug("languageScore: {}", languageScore);
 
-		int max = 0;
+		Map.Entry<String, Integer> maxEntry = null;
 		for (Map.Entry<String, Integer> scoreEntry : languageScore.entrySet()) {
-			if (scoreEntry.getValue() > max) {
-				max = scoreEntry.getValue();
+			if (maxEntry == null || scoreEntry.getValue() > maxEntry.getValue()) {
+				maxEntry = scoreEntry;
 			}
 		}
-		return "";
+		return maxEntry.getKey();
 	}
 
 	public static void main(String[] args) throws IOException {
