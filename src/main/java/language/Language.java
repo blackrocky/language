@@ -2,18 +2,25 @@ package language;
 
 import language.exception.FileNotValidException;
 import org.apache.commons.lang.StringUtils;
-import org.joda.time.LocalTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 
 import java.io.IOException;
 import java.util.*;
 
+@SpringBootApplication
 public class Language {
 	private static final Logger LOGGER = LoggerFactory.getLogger(Language.class);
 
     private static final String UNKNOWN = "UNKNOWN";
 	private Dictionary dictionary;
+
+    public Language() {
+
+    }
 
 	public Language(Dictionary dictionary) {
 		this.dictionary = dictionary;
@@ -24,7 +31,6 @@ public class Language {
 		LanguageFile languageFile = languageFileReader.readAllLinesWithCharacterCheck(pathStr);
 
 		Map<String, Integer> languageScore = new HashMap<>();
-		// TODO initialise available languages automatically
         List<LanguageFile> dictionaryFiles = languageFileReader.readDirectory("./src/test/resources/languagefiles");
         for (LanguageFile dictionaryFile : dictionaryFiles) {
             languageScore.put(dictionaryFile.getLanguage(), 0);
@@ -66,9 +72,8 @@ public class Language {
 	}
 
 	public static void main(String[] args) throws IOException {
-		LocalTime localTime = new LocalTime();
-		System.out.println("Hello world: " + localTime);
-
+        ApplicationContext ctx = SpringApplication.run(Language.class, args);
+        System.out.println("Hello world: ");
 	}
 
 }
