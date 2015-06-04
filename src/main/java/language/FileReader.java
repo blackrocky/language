@@ -18,13 +18,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Component
-public class LanguageFileReader {
-    private static final Logger LOGGER = LoggerFactory.getLogger(LanguageFileReader.class);
+public class FileReader {
+    private static final Logger LOGGER = LoggerFactory.getLogger(FileReader.class);
 
     public static final String LEGAL_CHARACTERS_REGEX = "^[a-zA-Z \\.\\,\\;\\:]+$";
 
-    public LanguageFileReader() {
-
+    public FileReader() {
     }
 
     public List<LanguageFile> readDirectory(String directory) throws IOException {

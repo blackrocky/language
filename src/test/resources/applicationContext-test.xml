@@ -4,14 +4,14 @@
 
 <beans>
     <!-- bean definitions here -->
-    <bean id="languageFileReader" class="language.LanguageFileReader" />
+    <bean id="fileReader" class="language.FileReader" />
 
     <bean id="dictionary" class="language.Dictionary">
-        <constructor-arg ref="languageFileReader"/>
+        <constructor-arg ref="fileReader"/>
     </bean>
 
     <bean id="language" class="language.Language">
-        <constructor-arg ref="languageFileReader"/>
+        <constructor-arg ref="fileReader"/>
         <constructor-arg ref="dictionary"/>
     </bean>
 </beans>

@@ -17,23 +17,16 @@ import static org.junit.Assert.assertThat;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"/applicationContext-test.xml"})
 public class LanguageTest {
-    @Autowired private LanguageFileReader languageFileReader;
-    @Autowired private Dictionary dictionary;
     @Autowired private Language language;
-    private List<LanguageFile> dictionaryFiles;
 
     @Before
     public void setUp() throws IOException, FileNotValidException {
-        dictionary.getDictionary().clear();
-        dictionaryFiles = languageFileReader.readDirectory("./src/test/resources/languagefiles");
-        for (LanguageFile file : dictionaryFiles) {
-            dictionary.readAndStore(file.getParent() + "/" + file.getFileName()); // TODO find better way
-        }
+        language.getDictionary().getDictionary().clear();
     }
 
     @Test
     public void should_return_indonesian_given_text() throws IOException, FileNotValidException {
-        String languageStr = language.determineLanguage("./src/test/resources/textfile/TEXT.txt", dictionaryFiles);
+        String languageStr = language.determineLanguage("./src/test/resources/textfile/TEXT.txt", "./src/test/resources/languagefiles");
         assertThat(languageStr, is("INDONESIAN"));
     }
 }

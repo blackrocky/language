@@ -20,6 +20,7 @@ import static org.junit.Assert.assertThat;
 @ContextConfiguration(locations={"/applicationContext-test.xml"})
 public class DictionaryTest {
     @Autowired private Dictionary dictionary;
+
     public static final String ENGLISH = "ENGLISH";
     public static final String INDONESIAN = "INDONESIAN";
 

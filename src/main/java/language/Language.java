@@ -5,7 +5,6 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -16,20 +15,48 @@ public class Language {
 	private static final Logger LOGGER = LoggerFactory.getLogger(Language.class);
 
     private static final String UNKNOWN = "UNKNOWN";
-    private LanguageFileReader languageFileReader;
+    private FileReader fileReader;
 	private Dictionary dictionary;
 
     public Language() {
     }
 
     @Autowired
-	public Language(LanguageFileReader languageFileReader, Dictionary dictionary) {
-        this.languageFileReader = languageFileReader;
+	public Language(FileReader fileReader, Dictionary dictionary) {
+        this.fileReader = fileReader;
 		this.dictionary = dictionary;
 	}
 
+    public FileReader getFileReader() {
+        return fileReader;
+    }
+
+    public void setFileReader(FileReader fileReader) {
+        this.fileReader = fileReader;
+    }
+
+    public Dictionary getDictionary() {
+        return dictionary;
+    }
+
+    public void setDictionary(Dictionary dictionary) {
+        this.dictionary = dictionary;
+    }
+
+    public String determineLanguage(String pathStr, String pathDictionaryStr) throws IOException, FileNotValidException {
+        List<LanguageFile> dictionaryFiles = fileReader.readDirectory(pathDictionaryStr);
+        for (LanguageFile file : dictionaryFiles) {
+            try {
+                dictionary.readAndStore(file.getParent() + "/" + file.getFileName()); // TODO find better way
+            } catch (FileNotValidException e) {
+                continue;
+            }
+        }
+        return determineLanguage(pathStr, dictionaryFiles);
+    }
+
 	public String determineLanguage(String pathStr, List<LanguageFile> dictionaryFiles) throws IOException, FileNotValidException {
-		LanguageFile languageFile = languageFileReader.readAllLinesWithCharacterCheck(pathStr);
+		LanguageFile languageFile = fileReader.readAllLinesWithCharacterCheck(pathStr);
 
 		Map<String, Integer> languageScore = new HashMap<>();
         for (LanguageFile dictionaryFile : dictionaryFiles) {

@@ -3,6 +3,7 @@ package language;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.List;
+import java.util.Objects;
 
 public final class LanguageFile {
     private final List<String> lines;
@@ -29,5 +30,19 @@ public final class LanguageFile {
 
     public final String getLanguage() {
         return StringUtils.substringBefore(fileName, ".");
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        LanguageFile that = (LanguageFile) o;
+        return Objects.equals(parent, that.parent) &&
+                Objects.equals(fileName, that.fileName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(parent, fileName);
     }
 }

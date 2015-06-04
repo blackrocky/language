@@ -16,20 +16,9 @@ public class Main {
 
     public static void main(String[] args) throws IOException, FileNotValidException {
         ApplicationContext ctx = SpringApplication.run(Main.class, args);
-        LanguageFileReader languageFileReader = (LanguageFileReader) ctx.getBean("languageFileReader");
-        Dictionary dictionary = (Dictionary) ctx.getBean("dictionary");
         Language language = (Language) ctx.getBean("language");
 
-        List<LanguageFile> dictionaryFiles = languageFileReader.readDirectory("./src/main/resources/languagefiles");
-        for (LanguageFile file : dictionaryFiles) {
-            try {
-                dictionary.readAndStore(file.getParent() + "/" + file.getFileName()); // TODO find better way
-            } catch (FileNotValidException e) {
-                continue;
-            }
-        }
-
-        String languageStr = language.determineLanguage("./src/main/resources/textfile/TEXT.txt", dictionaryFiles);
+        String languageStr = language.determineLanguage("./src/main/resources/textfile/TEXT.txt", "./src/main/resources/languagefiles");
         LOGGER.debug("languageStr = " + languageStr);
     }
 }

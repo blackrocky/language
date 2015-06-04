@@ -19,16 +19,16 @@ public class Dictionary {
     public static final String LEGAL_CHARACTERS_REGEX = "^[a-zA-Z \\.\\,\\;\\:]+$";
     public static final String NON_ALPHABET_AND_SPACE_REGEX = "[^a-zA-Z ]";
 
-    private LanguageFileReader languageFileReader;
+    private FileReader fileReader;
     private Map<String, Set<String>> dictionary = new HashMap<>();
 
     @Autowired
-    public Dictionary(LanguageFileReader languageFileReader) {
-        this.languageFileReader = languageFileReader;
+    public Dictionary(FileReader fileReader) {
+        this.fileReader = fileReader;
     }
 
     public void readAndStore(String pathStr) throws IOException, FileNotValidException {
-        LanguageFile languageFile = languageFileReader.readAllLinesWithCharacterCheck(pathStr);
+        LanguageFile languageFile = fileReader.readAllLinesWithCharacterCheck(pathStr);
 
         Pattern pattern = Pattern.compile(LEGAL_CHARACTERS_REGEX);
         for (String line : languageFile.getLines()) {
