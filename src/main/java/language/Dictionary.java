@@ -38,7 +38,7 @@ public class Dictionary {
 
             if (StringUtils.isNotBlank(line)) {
                 if (!matcher.matches()) {
-                    throw new IllegalStateException("File " + pathStr + " contains illegal characters");
+                    throw new FileNotValidException("File " + pathStr + " contains illegal characters");
                 }
                 storeLineInDictionary(line, languageFile.getLanguage());
             }

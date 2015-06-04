@@ -30,12 +30,12 @@ public class DictionaryTest {
     }
 
     @Test(expected = IllegalStateException.class)
-    public void should_throw_exeption_given_null_word() {
+    public void should_throw_exception_given_null_word() {
         dictionary.storeLineInDictionary(null, ENGLISH);
     }
 
     @Test(expected = IllegalStateException.class)
-    public void should_throw_exeption_given_blank_word() {
+    public void should_throw_exception_given_blank_word() {
         dictionary.storeLineInDictionary("", ENGLISH);
     }
 
