@@ -53,7 +53,7 @@ public class FileReader {
     public LanguageFile readAllLinesWithCharacterCheck(String pathStr) throws IOException, FileNotValidException {
         Path path = Paths.get(pathStr);
         List<String> lines = Files.readAllLines(path, Charset.defaultCharset());
-        LOGGER.debug("Reading file {}", path.getFileName().toString());
+        LOGGER.trace("Reading file {}", path.getFileName().toString());
 
         String parent = path.getParent().toString();
         String fileName = path.getFileName().toString();
@@ -65,7 +65,7 @@ public class FileReader {
 
             if (StringUtils.isNotBlank(line)) {
                 if (!matcher.matches()) {
-                    LOGGER.debug("File {} is invalid", path.getFileName().toString());
+                    LOGGER.error("File {} has illegal character(s)", path.getFileName().toString());
                     throw new FileNotValidException("File " + pathStr + " contains illegal characters");
                 }
             }

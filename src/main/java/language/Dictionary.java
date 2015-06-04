@@ -8,19 +8,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 public class Dictionary {
     private static final Logger LOGGER = LoggerFactory.getLogger(Dictionary.class);
 
-    public static final String LEGAL_CHARACTERS_REGEX = "^[a-zA-Z \\.\\,\\;\\:]+$";
     public static final String NON_ALPHABET_AND_SPACE_REGEX = "[^a-zA-Z ]";
 
     private FileReader fileReader;
-    private Map<String, Set<String>> dictionary = new HashMap<>();
+    private Map<String, Set<String>> dictionary = new ConcurrentHashMap<>();
 
     @Autowired
     public Dictionary(FileReader fileReader) {
@@ -28,16 +29,9 @@ public class Dictionary {
     }
 
     public void readAndStore(LanguageFile languageFile) throws IOException, FileNotValidException {
-        Pattern pattern = Pattern.compile(LEGAL_CHARACTERS_REGEX);
         for (String line : languageFile.getLines()) {
-            Matcher matcher = pattern.matcher(line);
-            LOGGER.trace("line = {}", line);
-            LOGGER.trace("matches {}", matcher.matches());
 
             if (StringUtils.isNotBlank(line)) {
-                if (!matcher.matches()) {
-                    throw new FileNotValidException("File " + languageFile.getFileName() + " contains illegal characters");
-                }
                 storeLineInDictionary(line, languageFile.getLanguage());
             }
         }
