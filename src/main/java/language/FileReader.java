@@ -53,7 +53,7 @@ public class FileReader {
     public LanguageFile readAllLinesWithCharacterCheck(String pathStr) throws IOException, FileNotValidException {
         Path path = Paths.get(pathStr);
         List<String> lines = Files.readAllLines(path, Charset.defaultCharset());
-        LOGGER.trace("Reading file {}", path.getFileName().toString());
+        LOGGER.debug("Reading file {}", path.getFileName().toString());
 
         String parent = path.getParent().toString();
         String fileName = path.getFileName().toString();
