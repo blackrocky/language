@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -14,6 +15,7 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 public class DictionaryTest extends AbstractJUnitTest {
+    @Autowired private FileReader fileReader;
     @Autowired private Dictionary dictionary;
 
     public static final String ENGLISH = "ENGLISH";
@@ -48,7 +50,9 @@ public class DictionaryTest extends AbstractJUnitTest {
 
     @Test
     public void should_read_and_store_one_file() throws IOException, FileNotValidException {
-        dictionary.readAndStore("./src/test/resources/dictionaryfiles/ENGLISH.2");
+
+        dictionary.readAndStore(fileReader.readAllLinesWithCharacterCheck("./src/test/resources/dictionaryfiles/ENGLISH.2"));
+
         Map<String, Set<String>> dictionaryMap = dictionary.getDictionary();
         assertThat(dictionaryMap, notNullValue());
         assertThat(dictionaryMap.size(), is(1));
@@ -66,8 +70,8 @@ public class DictionaryTest extends AbstractJUnitTest {
 
     @Test
     public void should_read_and_store_multiple_files_one_language() throws IOException, FileNotValidException {
-        dictionary.readAndStore("./src/test/resources/dictionaryfiles/ENGLISH.2");
-        dictionary.readAndStore("./src/test/resources/dictionaryfiles/ENGLISH.3");
+        dictionary.readAndStore(fileReader.readAllLinesWithCharacterCheck("./src/test/resources/dictionaryfiles/ENGLISH.2"));
+        dictionary.readAndStore(fileReader.readAllLinesWithCharacterCheck("./src/test/resources/dictionaryfiles/ENGLISH.3"));
         Map<String, Set<String>> dictionaryMap = dictionary.getDictionary();
         assertThat(dictionaryMap, notNullValue());
         assertThat(dictionaryMap.size(), is(1));
@@ -87,12 +91,13 @@ public class DictionaryTest extends AbstractJUnitTest {
 
     @Test
     public void should_read_and_store_multiple_files_multiple_languages() throws IOException, FileNotValidException {
-        dictionary.readAndStore("./src/test/resources/dictionaryfiles/ENGLISH.2");
-        dictionary.readAndStore("./src/test/resources/dictionaryfiles/ENGLISH.3");
-        dictionary.readAndStore("./src/test/resources/dictionaryfiles/INDONESIAN.1");
+        List<LanguageFile> languageFiles = fileReader.readDirectory("./src/test/resources/dictionaryfiles");
+        for (LanguageFile file : languageFiles) {
+            dictionary.readAndStore(file);
+        }
         Map<String, Set<String>> dictionaryMap = dictionary.getDictionary();
         assertThat(dictionaryMap, notNullValue());
-        assertThat(dictionaryMap.size(), is(2));
+        assertThat(dictionaryMap.size(), is(3));
 
         Set<String> englishWords = dictionaryMap.get(ENGLISH);
         assertThat(englishWords, notNullValue());
@@ -119,6 +124,6 @@ public class DictionaryTest extends AbstractJUnitTest {
 
     @Test(expected = FileNotValidException.class)
     public void should_return_exception_given_file_with_illegal_character() throws IOException, FileNotValidException {
-        dictionary.readAndStore("./src/test/resources/dictionaryfiles/ENGLISH.1");
+        dictionary.readAndStore(fileReader.readAllLinesWithCharacterCheck("./src/test/resources/dictionaryfiles/ENGLISH.1"));
     }
 }

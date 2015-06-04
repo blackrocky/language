@@ -27,29 +27,17 @@ public class Language {
 		this.dictionary = dictionary;
 	}
 
-    public FileReader getFileReader() {
-        return fileReader;
-    }
-
-    public void setFileReader(FileReader fileReader) {
-        this.fileReader = fileReader;
-    }
-
     public Dictionary getDictionary() {
         return dictionary;
-    }
-
-    public void setDictionary(Dictionary dictionary) {
-        this.dictionary = dictionary;
     }
 
     public String determineLanguage(String pathStr, String pathDictionaryStr) throws IOException, FileNotValidException {
         List<LanguageFile> dictionaryFiles = fileReader.readDirectory(pathDictionaryStr);
         for (LanguageFile file : dictionaryFiles) {
             try {
-                dictionary.readAndStore(file.getParent() + "/" + file.getFileName()); // TODO find better way
+                dictionary.readAndStore(file);
             } catch (FileNotValidException e) {
-                LOGGER.debug("File not valid for {} - {}", file.getFileName(), e.getMessage());
+                LOGGER.error("File not valid for {} - {}", file.getFileName(), e.getMessage());
                 continue;
             }
         }

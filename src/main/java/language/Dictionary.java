@@ -27,9 +27,7 @@ public class Dictionary {
         this.fileReader = fileReader;
     }
 
-    public void readAndStore(String pathStr) throws IOException, FileNotValidException {
-        LanguageFile languageFile = fileReader.readAllLinesWithCharacterCheck(pathStr);
-
+    public void readAndStore(LanguageFile languageFile) throws IOException, FileNotValidException {
         Pattern pattern = Pattern.compile(LEGAL_CHARACTERS_REGEX);
         for (String line : languageFile.getLines()) {
             Matcher matcher = pattern.matcher(line);
@@ -38,7 +36,7 @@ public class Dictionary {
 
             if (StringUtils.isNotBlank(line)) {
                 if (!matcher.matches()) {
-                    throw new FileNotValidException("File " + pathStr + " contains illegal characters");
+                    throw new FileNotValidException("File " + languageFile.getFileName() + " contains illegal characters");
                 }
                 storeLineInDictionary(line, languageFile.getLanguage());
             }

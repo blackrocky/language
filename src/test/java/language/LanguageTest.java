@@ -1,6 +1,7 @@
 package language;
 
 import language.exception.FileNotValidException;
+import org.apache.log4j.BasicConfigurator;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
