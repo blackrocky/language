@@ -14,7 +14,7 @@ language.
 - If there is not enough data to determine the language, then UNKNOWN should be returned
 
 # Software Needed
-- JDK 7
+- JDK 8
 - Maven 3.3.3
 
 # Usage

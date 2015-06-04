@@ -1,5 +1,6 @@
 package language;
 
+import language.exception.FileNotValidException;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.LocalTime;
 import org.slf4j.Logger;
@@ -10,20 +11,24 @@ import java.util.*;
 
 public class Language {
 	private static final Logger LOGGER = LoggerFactory.getLogger(Language.class);
+
+    private static final String UNKNOWN = "UNKNOWN";
 	private Dictionary dictionary;
 
 	public Language(Dictionary dictionary) {
 		this.dictionary = dictionary;
 	}
 
-	public String determineLanguage(String pathStr) throws IOException {
+	public String determineLanguage(String pathStr) throws IOException, FileNotValidException {
 		LanguageFileReader languageFileReader = new LanguageFileReader();
 		LanguageFile languageFile = languageFileReader.readAllLinesWithCharacterCheck(pathStr);
 
 		Map<String, Integer> languageScore = new HashMap<>();
 		// TODO initialise available languages automatically
-		languageScore.put("ENGLISH", 0);
-		languageScore.put("INDONESIAN", 0);
+        List<LanguageFile> dictionaryFiles = languageFileReader.readDirectory("./src/test/resources/languagefiles");
+        for (LanguageFile dictionaryFile : dictionaryFiles) {
+            languageScore.put(dictionaryFile.getLanguage(), 0);
+        }
 
 		for (String line : languageFile.getLines()) {
 			LOGGER.debug("line = {}", line);
@@ -54,6 +59,9 @@ public class Language {
 				maxEntry = scoreEntry;
 			}
 		}
+        if (maxEntry == null) {
+            return UNKNOWN;
+        }
 		return maxEntry.getKey();
 	}
 

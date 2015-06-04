@@ -1,5 +1,6 @@
 package language;
 
+import language.exception.FileNotValidException;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +23,7 @@ public class Dictionary {
         this.languageFileReader = languageFileReader;
     }
 
-    public void readAndStore(String pathStr) throws IOException {
+    public void readAndStore(String pathStr) throws IOException, FileNotValidException {
         LanguageFile languageFile = languageFileReader.readAllLinesWithCharacterCheck(pathStr);
 
         Pattern pattern = Pattern.compile(LEGAL_CHARACTERS_REGEX);
@@ -35,7 +36,7 @@ public class Dictionary {
                 if (!matcher.matches()) {
                     throw new IllegalStateException("File " + pathStr + " contains illegal characters");
                 }
-                storeLineInDictionary(line, languageFile.getFileName());
+                storeLineInDictionary(line, languageFile.getLanguage());
             }
         }
     }

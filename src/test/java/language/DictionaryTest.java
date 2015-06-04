@@ -1,5 +1,6 @@
 package language;
 
+import language.exception.FileNotValidException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -44,7 +45,7 @@ public class DictionaryTest {
     }
 
     @Test
-    public void should_read_and_store_one_file() throws IOException {
+    public void should_read_and_store_one_file() throws IOException, FileNotValidException {
         dictionary.readAndStore("./src/test/resources/languagefiles/ENGLISH.2");
         Map<String, Set<String>> dictionary = this.dictionary.getDictionary();
         assertThat(dictionary, notNullValue());
@@ -62,7 +63,7 @@ public class DictionaryTest {
     }
 
     @Test
-    public void should_read_and_store_multiple_files_one_language() throws IOException {
+    public void should_read_and_store_multiple_files_one_language() throws IOException, FileNotValidException {
         dictionary.readAndStore("./src/test/resources/languagefiles/ENGLISH.2");
         dictionary.readAndStore("./src/test/resources/languagefiles/ENGLISH.3");
         Map<String, Set<String>> dictionary = this.dictionary.getDictionary();
@@ -83,7 +84,7 @@ public class DictionaryTest {
     }
 
     @Test
-    public void should_read_and_store_multiple_files_multiple_languages() throws IOException {
+    public void should_read_and_store_multiple_files_multiple_languages() throws IOException, FileNotValidException {
         dictionary.readAndStore("./src/test/resources/languagefiles/ENGLISH.2");
         dictionary.readAndStore("./src/test/resources/languagefiles/ENGLISH.3");
         dictionary.readAndStore("./src/test/resources/languagefiles/INDONESIAN.1");
@@ -114,14 +115,8 @@ public class DictionaryTest {
         assertThat(indonesianWords.contains("kembari"), is(true));
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void should_return_exception_given_file_with_illegal_character() throws IOException {
+    @Test(expected = FileNotValidException.class)
+    public void should_return_exception_given_file_with_illegal_character() throws IOException, FileNotValidException {
         dictionary.readAndStore("./src/test/resources/languagefiles/ENGLISH.1");
     }
-
-    // TODO
-//    @Test
-//    public void should_read_all_files_in_directory() {
-//        dictionaryBuilder.readAndStore();
-//    }
 }

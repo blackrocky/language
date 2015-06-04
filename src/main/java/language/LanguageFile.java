@@ -1,22 +1,33 @@
 package language;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.util.List;
 
-public class LanguageFile {
-    private List<String> lines;
-    private String fileName;
-    // TODO private Set<String> words;
+public final class LanguageFile {
+    private final List<String> lines;
+    private final String parent;
+    private final String fileName;
 
-    public LanguageFile(List<String> lines, String fileName) {
+    public LanguageFile(final List<String> lines, final String parent, final String fileName) {
+        this.parent = parent;
         this.lines = lines;
         this.fileName = fileName;
     }
 
-    public List<String> getLines() {
+    public String getParent() {
+        return parent;
+    }
+
+    public final List<String> getLines() {
         return lines;
     }
 
-    public String getFileName() {
+    public final String getFileName() {
         return fileName;
+    }
+
+    public final String getLanguage() {
+        return StringUtils.substringBefore(fileName, ".");
     }
 }
