@@ -42,22 +42,22 @@ public class DictionaryTest {
     @Test
     public void should_return_same_word_given_plain_word_input() {
         dictionary.storeLineInDictionary("Hello world!", ENGLISH);
-        Map<String, Set<String>> dictionary = this.dictionary.getDictionary();
-        assertThat(dictionary, notNullValue());
-        assertThat(dictionary.size(), is(1));
-        assertThat(dictionary.get(ENGLISH), notNullValue());
-        assertThat(dictionary.get(ENGLISH).size(), is(2));
-        assertThat(dictionary.get(ENGLISH).contains("hello"), is(true));
-        assertThat(dictionary.get(ENGLISH).contains("world") , is(true));
+        Map<String, Set<String>> dictionaryMap = dictionary.getDictionary();
+        assertThat(dictionaryMap, notNullValue());
+        assertThat(dictionaryMap.size(), is(1));
+        assertThat(dictionaryMap.get(ENGLISH), notNullValue());
+        assertThat(dictionaryMap.get(ENGLISH).size(), is(2));
+        assertThat(dictionaryMap.get(ENGLISH).contains("hello"), is(true));
+        assertThat(dictionaryMap.get(ENGLISH).contains("world") , is(true));
     }
 
     @Test
     public void should_read_and_store_one_file() throws IOException, FileNotValidException {
         dictionary.readAndStore("./src/test/resources/dictionaryfiles/ENGLISH.2");
-        Map<String, Set<String>> dictionary = this.dictionary.getDictionary();
-        assertThat(dictionary, notNullValue());
-        assertThat(dictionary.size(), is(1));
-        Set<String> words = dictionary.get(ENGLISH);
+        Map<String, Set<String>> dictionaryMap = dictionary.getDictionary();
+        assertThat(dictionaryMap, notNullValue());
+        assertThat(dictionaryMap.size(), is(1));
+        Set<String> words = dictionaryMap.get(ENGLISH);
         assertThat(words, notNullValue());
         assertThat(words.size(), is(7));
         assertThat(words.contains("i"), is(true));
@@ -73,10 +73,10 @@ public class DictionaryTest {
     public void should_read_and_store_multiple_files_one_language() throws IOException, FileNotValidException {
         dictionary.readAndStore("./src/test/resources/dictionaryfiles/ENGLISH.2");
         dictionary.readAndStore("./src/test/resources/dictionaryfiles/ENGLISH.3");
-        Map<String, Set<String>> dictionary = this.dictionary.getDictionary();
-        assertThat(dictionary, notNullValue());
-        assertThat(dictionary.size(), is(1));
-        Set<String> words = dictionary.get(ENGLISH);
+        Map<String, Set<String>> dictionaryMap = dictionary.getDictionary();
+        assertThat(dictionaryMap, notNullValue());
+        assertThat(dictionaryMap.size(), is(1));
+        Set<String> words = dictionaryMap.get(ENGLISH);
         assertThat(words, notNullValue());
         assertThat(words.size(), is(92));
         assertThat(words.contains("i"), is(true));
@@ -95,11 +95,11 @@ public class DictionaryTest {
         dictionary.readAndStore("./src/test/resources/dictionaryfiles/ENGLISH.2");
         dictionary.readAndStore("./src/test/resources/dictionaryfiles/ENGLISH.3");
         dictionary.readAndStore("./src/test/resources/dictionaryfiles/INDONESIAN.1");
-        Map<String, Set<String>> dictionary = this.dictionary.getDictionary();
-        assertThat(dictionary, notNullValue());
-        assertThat(dictionary.size(), is(2));
+        Map<String, Set<String>> dictionaryMap = dictionary.getDictionary();
+        assertThat(dictionaryMap, notNullValue());
+        assertThat(dictionaryMap.size(), is(2));
 
-        Set<String> englishWords = dictionary.get(ENGLISH);
+        Set<String> englishWords = dictionaryMap.get(ENGLISH);
         assertThat(englishWords, notNullValue());
         assertThat(englishWords.size(), is(92));
         assertThat(englishWords.contains("i"), is(true));
@@ -112,7 +112,7 @@ public class DictionaryTest {
         assertThat(englishWords.contains("saint"), is(true));
         assertThat(englishWords.contains("seiya"), is(true));
 
-        Set<String> indonesianWords = dictionary.get(INDONESIAN);
+        Set<String> indonesianWords = dictionaryMap.get(INDONESIAN);
         assertThat(indonesianWords, notNullValue());
         assertThat(indonesianWords.size(), is(89));
         assertThat(indonesianWords.contains("bali"), is(true));
