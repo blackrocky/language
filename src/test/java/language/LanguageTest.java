@@ -2,7 +2,6 @@ package language;
 
 import language.exception.FileNotValidException;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +32,7 @@ public class LanguageTest {
 
     @Test
     public void should_return_indonesian_given_text() throws IOException, FileNotValidException {
-        String languageStr = language.determineLanguage("./src/test/resources/textfile/TEXT.txt");
+        String languageStr = language.determineLanguage("./src/test/resources/textfile/TEXT.txt", "./src/test/resources/languagefiles");
         assertThat(languageStr, is("INDONESIAN"));
     }
 }
