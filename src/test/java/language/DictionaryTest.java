@@ -37,8 +37,8 @@ public class DictionaryTest extends AbstractJUnitTest {
     }
 
     @Test
-    public void should_return_same_word_given_plain_word_input() {
-        dictionary.storeLineInDictionary("Hello world!", ENGLISH);
+    public void should_remove_duplicate_word_given_input() {
+        dictionary.storeLineInDictionary("Hello, world. hello: hello ", ENGLISH);
         Map<String, Set<String>> dictionaryMap = dictionary.getDictionary();
         assertThat(dictionaryMap, notNullValue());
         assertThat(dictionaryMap.size(), is(1));
@@ -50,12 +50,12 @@ public class DictionaryTest extends AbstractJUnitTest {
 
     @Test
     public void should_read_and_store_one_file() throws IOException, FileNotValidException {
-
         dictionary.readAndStore(fileReader.readAllLinesWithCharacterCheck("./src/test/resources/dictionaryfiles/ENGLISH.2"));
-
         Map<String, Set<String>> dictionaryMap = dictionary.getDictionary();
+
         assertThat(dictionaryMap, notNullValue());
         assertThat(dictionaryMap.size(), is(1));
+
         Set<String> words = dictionaryMap.get(ENGLISH);
         assertThat(words, notNullValue());
         assertThat(words.size(), is(7));
@@ -72,9 +72,11 @@ public class DictionaryTest extends AbstractJUnitTest {
     public void should_read_and_store_multiple_files_one_language() throws IOException, FileNotValidException {
         dictionary.readAndStore(fileReader.readAllLinesWithCharacterCheck("./src/test/resources/dictionaryfiles/ENGLISH.2"));
         dictionary.readAndStore(fileReader.readAllLinesWithCharacterCheck("./src/test/resources/dictionaryfiles/ENGLISH.3"));
+
         Map<String, Set<String>> dictionaryMap = dictionary.getDictionary();
         assertThat(dictionaryMap, notNullValue());
         assertThat(dictionaryMap.size(), is(1));
+
         Set<String> words = dictionaryMap.get(ENGLISH);
         assertThat(words, notNullValue());
         assertThat(words.size(), is(92));

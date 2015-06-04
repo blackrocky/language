@@ -30,7 +30,6 @@ public class Dictionary {
 
     public void readAndStore(LanguageFile languageFile) throws IOException, FileNotValidException {
         for (String line : languageFile.getLines()) {
-
             if (StringUtils.isNotBlank(line)) {
                 storeLineInDictionary(line, languageFile.getLanguage());
             }

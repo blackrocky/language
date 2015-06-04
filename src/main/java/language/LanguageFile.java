@@ -29,7 +29,7 @@ public final class LanguageFile {
     }
 
     public final String getLanguage() {
-        return StringUtils.substringBefore(fileName, ".");
+        return StringUtils.upperCase(StringUtils.substringBefore(fileName, "."));
     }
 
     @Override
