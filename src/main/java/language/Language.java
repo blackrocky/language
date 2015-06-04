@@ -49,6 +49,7 @@ public class Language {
             try {
                 dictionary.readAndStore(file.getParent() + "/" + file.getFileName()); // TODO find better way
             } catch (FileNotValidException e) {
+                LOGGER.debug("File not valid for {} - {}", file.getFileName(), e.getMessage());
                 continue;
             }
         }
