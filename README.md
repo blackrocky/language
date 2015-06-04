@@ -23,3 +23,4 @@ language.
 
 ## JAR Package
 - mvn clean compile package
+- java -jar target/language-1.0.0.jar
