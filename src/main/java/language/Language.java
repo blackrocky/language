@@ -28,11 +28,10 @@ public class Language {
 		this.dictionary = dictionary;
 	}
 
-	public String determineLanguage(String pathStr, String pathDictionaryStr) throws IOException, FileNotValidException {
+	public String determineLanguage(String pathStr, List<LanguageFile> dictionaryFiles) throws IOException, FileNotValidException {
 		LanguageFile languageFile = languageFileReader.readAllLinesWithCharacterCheck(pathStr);
 
 		Map<String, Integer> languageScore = new HashMap<>();
-        List<LanguageFile> dictionaryFiles = languageFileReader.readDirectory(pathDictionaryStr);
         for (LanguageFile dictionaryFile : dictionaryFiles) {
             languageScore.put(dictionaryFile.getLanguage(), 0);
         }

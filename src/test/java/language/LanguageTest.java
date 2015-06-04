@@ -20,19 +20,20 @@ public class LanguageTest {
     @Autowired private LanguageFileReader languageFileReader;
     @Autowired private Dictionary dictionary;
     @Autowired private Language language;
+    private List<LanguageFile> dictionaryFiles;
 
     @Before
     public void setUp() throws IOException, FileNotValidException {
         dictionary.getDictionary().clear();
-        List<LanguageFile> languageFileList = languageFileReader.readDirectory("./src/test/resources/languagefiles");
-        for (LanguageFile file : languageFileList) {
+        dictionaryFiles = languageFileReader.readDirectory("./src/test/resources/languagefiles");
+        for (LanguageFile file : dictionaryFiles) {
             dictionary.readAndStore(file.getParent() + "/" + file.getFileName()); // TODO find better way
         }
     }
 
     @Test
     public void should_return_indonesian_given_text() throws IOException, FileNotValidException {
-        String languageStr = language.determineLanguage("./src/test/resources/textfile/TEXT.txt", "./src/test/resources/languagefiles");
+        String languageStr = language.determineLanguage("./src/test/resources/textfile/TEXT.txt", dictionaryFiles);
         assertThat(languageStr, is("INDONESIAN"));
     }
 }

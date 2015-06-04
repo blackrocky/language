@@ -20,8 +20,8 @@ public class Main {
         Dictionary dictionary = (Dictionary) ctx.getBean("dictionary");
         Language language = (Language) ctx.getBean("language");
 
-        List<LanguageFile> languageFileList = languageFileReader.readDirectory("./src/main/resources/languagefiles");
-        for (LanguageFile file : languageFileList) {
+        List<LanguageFile> dictionaryFiles = languageFileReader.readDirectory("./src/main/resources/languagefiles");
+        for (LanguageFile file : dictionaryFiles) {
             try {
                 dictionary.readAndStore(file.getParent() + "/" + file.getFileName()); // TODO find better way
             } catch (FileNotValidException e) {
@@ -29,7 +29,7 @@ public class Main {
             }
         }
 
-        String languageStr = language.determineLanguage("./src/main/resources/textfile/TEXT.txt", "./src/main/resources/languagefiles");
+        String languageStr = language.determineLanguage("./src/main/resources/textfile/TEXT.txt", dictionaryFiles);
         LOGGER.debug("languageStr = " + languageStr);
     }
 }
