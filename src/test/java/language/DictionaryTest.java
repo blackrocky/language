@@ -3,10 +3,7 @@ package language;
 import language.exception.FileNotValidException;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.IOException;
 import java.util.Map;
@@ -16,9 +13,7 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"/applicationContext-test.xml"})
-public class DictionaryTest {
+public class DictionaryTest extends AbstractJUnitTest {
     @Autowired private Dictionary dictionary;
 
     public static final String ENGLISH = "ENGLISH";
