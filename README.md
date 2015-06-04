@@ -18,4 +18,8 @@ language.
 - Maven 3.3.3
 
 # Usage
+## Spring Boot
 - mvn spring-boot:run
+
+## JAR Package
+- mvn clean compile package
