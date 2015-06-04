@@ -25,8 +25,14 @@ public class LanguageTest extends AbstractJUnitTest {
     }
 
     @Test
-    public void should_return_unknown_given_text() throws IOException, FileNotValidException {
+    public void should_return_unknown_given_text_with_all_zero_occurence() throws IOException, FileNotValidException {
         String languageStr = language.determineLanguage("./src/test/resources/textfile/TEXT2.txt", "./src/test/resources/dictionaryfiles2");
         assertThat(languageStr, is("UNKNOWN"));
+    }
+
+    @Test
+    public void should_return_either_given_same_words() throws IOException, FileNotValidException {
+        String languageStr = language.determineLanguage("./src/test/resources/textfile/TEXT3.txt", "./src/test/resources/dictionaryfiles3");
+        assertThat(languageStr, is("ENGLISH"));
     }
 }

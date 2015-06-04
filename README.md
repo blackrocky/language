@@ -12,6 +12,7 @@ language.
 - Known language files have the language name as the filename and numbers as the extension eg. ENGLISH.1 ENGLISH.2 FRENCH.1 FRENCH.2 would have 2 languages: ENGLISH and FRENCH
 - If characters other than allowed ones exist, program will return error message saying illegal character exists
 - If there is not enough data to determine the language, then UNKNOWN should be returned
+- If the program determines that text could be either language "A" or "B", then it may pick either one
 
 # Software Needed
 - JDK 8
