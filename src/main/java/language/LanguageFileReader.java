@@ -4,6 +4,7 @@ import language.exception.FileNotValidException;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -16,10 +17,15 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Component
 public class LanguageFileReader {
     private static final Logger LOGGER = LoggerFactory.getLogger(LanguageFileReader.class);
 
     public static final String LEGAL_CHARACTERS_REGEX = "^[a-zA-Z \\.\\,\\;\\:]+$";
+
+    public LanguageFileReader() {
+
+    }
 
     public List<LanguageFile> readDirectory(String directory) throws IOException {
         List<String> fileNames = new ArrayList<>();

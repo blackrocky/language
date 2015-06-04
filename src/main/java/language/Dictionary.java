@@ -4,12 +4,15 @@ import language.exception.FileNotValidException;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Component
 public class Dictionary {
     private static final Logger LOGGER = LoggerFactory.getLogger(Dictionary.class);
 
@@ -19,6 +22,7 @@ public class Dictionary {
     private LanguageFileReader languageFileReader;
     private Map<String, Set<String>> dictionary = new HashMap<>();
 
+    @Autowired
     public Dictionary(LanguageFileReader languageFileReader) {
         this.languageFileReader = languageFileReader;
     }

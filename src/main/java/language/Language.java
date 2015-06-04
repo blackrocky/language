@@ -4,30 +4,31 @@ import language.exception.FileNotValidException;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.*;
 
-@SpringBootApplication
+@Component
 public class Language {
 	private static final Logger LOGGER = LoggerFactory.getLogger(Language.class);
 
     private static final String UNKNOWN = "UNKNOWN";
+    private LanguageFileReader languageFileReader;
 	private Dictionary dictionary;
 
     public Language() {
-
     }
 
-	public Language(Dictionary dictionary) {
+    @Autowired
+	public Language(LanguageFileReader languageFileReader, Dictionary dictionary) {
+        this.languageFileReader = languageFileReader;
 		this.dictionary = dictionary;
 	}
 
 	public String determineLanguage(String pathStr) throws IOException, FileNotValidException {
-		LanguageFileReader languageFileReader = new LanguageFileReader();
 		LanguageFile languageFile = languageFileReader.readAllLinesWithCharacterCheck(pathStr);
 
 		Map<String, Integer> languageScore = new HashMap<>();
@@ -70,10 +71,4 @@ public class Language {
         }
 		return maxEntry.getKey();
 	}
-
-	public static void main(String[] args) throws IOException {
-        ApplicationContext ctx = SpringApplication.run(Language.class, args);
-        System.out.println("Hello world: ");
-	}
-
 }
