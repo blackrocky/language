@@ -18,7 +18,7 @@ public class Main {
         ApplicationContext ctx = SpringApplication.run(Main.class, args);
         Language language = (Language) ctx.getBean("language");
 
-        String languageStr = language.determineLanguage("./src/main/resources/textfile/TEXT.txt", "./src/main/resources/languagefiles");
+        String languageStr = language.determineLanguage("./src/main/resources/textfile/TEXT.txt", "./src/main/resources/dictionaryfiles");
         LOGGER.debug("languageStr = " + languageStr);
     }
 }

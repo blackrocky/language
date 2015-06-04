@@ -26,7 +26,7 @@ public class LanguageTest {
 
     @Test
     public void should_return_indonesian_given_text() throws IOException, FileNotValidException {
-        String languageStr = language.determineLanguage("./src/test/resources/textfile/TEXT.txt", "./src/test/resources/languagefiles");
+        String languageStr = language.determineLanguage("./src/test/resources/textfile/TEXT.txt", "./src/test/resources/dictionaryfiles");
         assertThat(languageStr, is("INDONESIAN"));
     }
 }

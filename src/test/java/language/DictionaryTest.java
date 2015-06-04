@@ -53,7 +53,7 @@ public class DictionaryTest {
 
     @Test
     public void should_read_and_store_one_file() throws IOException, FileNotValidException {
-        dictionary.readAndStore("./src/test/resources/languagefiles/ENGLISH.2");
+        dictionary.readAndStore("./src/test/resources/dictionaryfiles/ENGLISH.2");
         Map<String, Set<String>> dictionary = this.dictionary.getDictionary();
         assertThat(dictionary, notNullValue());
         assertThat(dictionary.size(), is(1));
@@ -71,8 +71,8 @@ public class DictionaryTest {
 
     @Test
     public void should_read_and_store_multiple_files_one_language() throws IOException, FileNotValidException {
-        dictionary.readAndStore("./src/test/resources/languagefiles/ENGLISH.2");
-        dictionary.readAndStore("./src/test/resources/languagefiles/ENGLISH.3");
+        dictionary.readAndStore("./src/test/resources/dictionaryfiles/ENGLISH.2");
+        dictionary.readAndStore("./src/test/resources/dictionaryfiles/ENGLISH.3");
         Map<String, Set<String>> dictionary = this.dictionary.getDictionary();
         assertThat(dictionary, notNullValue());
         assertThat(dictionary.size(), is(1));
@@ -92,9 +92,9 @@ public class DictionaryTest {
 
     @Test
     public void should_read_and_store_multiple_files_multiple_languages() throws IOException, FileNotValidException {
-        dictionary.readAndStore("./src/test/resources/languagefiles/ENGLISH.2");
-        dictionary.readAndStore("./src/test/resources/languagefiles/ENGLISH.3");
-        dictionary.readAndStore("./src/test/resources/languagefiles/INDONESIAN.1");
+        dictionary.readAndStore("./src/test/resources/dictionaryfiles/ENGLISH.2");
+        dictionary.readAndStore("./src/test/resources/dictionaryfiles/ENGLISH.3");
+        dictionary.readAndStore("./src/test/resources/dictionaryfiles/INDONESIAN.1");
         Map<String, Set<String>> dictionary = this.dictionary.getDictionary();
         assertThat(dictionary, notNullValue());
         assertThat(dictionary.size(), is(2));
@@ -124,6 +124,6 @@ public class DictionaryTest {
 
     @Test(expected = FileNotValidException.class)
     public void should_return_exception_given_file_with_illegal_character() throws IOException, FileNotValidException {
-        dictionary.readAndStore("./src/test/resources/languagefiles/ENGLISH.1");
+        dictionary.readAndStore("./src/test/resources/dictionaryfiles/ENGLISH.1");
     }
 }
