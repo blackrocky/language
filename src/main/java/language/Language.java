@@ -93,7 +93,15 @@ public class Language {
 				maxEntry = scoreEntry;
 			}
 		}
-        if (maxEntry == null) {
+        boolean allZero = true;
+        for (Map.Entry<String, Integer> scoreEntry : languageScore.entrySet()) {
+            if (scoreEntry.getValue() > 0) {
+                allZero = false;
+                break;
+            }
+        }
+
+        if (maxEntry == null || allZero) {
             return UNKNOWN;
         }
 		return maxEntry.getKey();

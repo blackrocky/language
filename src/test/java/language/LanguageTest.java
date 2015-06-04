@@ -29,4 +29,10 @@ public class LanguageTest {
         String languageStr = language.determineLanguage("./src/test/resources/textfile/TEXT.txt", "./src/test/resources/dictionaryfiles");
         assertThat(languageStr, is("INDONESIAN"));
     }
+
+    @Test
+    public void should_return_unknown_given_text() throws IOException, FileNotValidException {
+        String languageStr = language.determineLanguage("./src/test/resources/textfile/TEXT2.txt", "./src/test/resources/dictionaryfiles2");
+        assertThat(languageStr, is("UNKNOWN"));
+    }
 }

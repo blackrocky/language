@@ -44,6 +44,6 @@ public class FileReaderTest {
     public void should_return_list_of_valid_files_in_a_directory() throws IOException {
         List<LanguageFile> languageFiles = fileReader.readDirectory("./src/test/resources/dictionaryfiles");
         assertThat(languageFiles, notNullValue());
-        assertThat(languageFiles.size(), is(3));
+        assertThat(languageFiles.size(), is(4));
     }
 }
