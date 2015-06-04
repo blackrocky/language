@@ -76,20 +76,15 @@ public class Language {
 		LOGGER.debug("languageScore: {}", languageScore);
 
 		Map.Entry<String, Integer> maxEntry = null;
+        int totalScore = 0;
 		for (Map.Entry<String, Integer> scoreEntry : languageScore.entrySet()) {
 			if (maxEntry == null || scoreEntry.getValue() > maxEntry.getValue()) {
 				maxEntry = scoreEntry;
 			}
+            totalScore += scoreEntry.getValue();
 		}
-        boolean allZero = true;
-        for (Map.Entry<String, Integer> scoreEntry : languageScore.entrySet()) {
-            if (scoreEntry.getValue() > 0) {
-                allZero = false;
-                break;
-            }
-        }
 
-        if (maxEntry == null || allZero) {
+        if (maxEntry == null || totalScore == 0) {
             return UNKNOWN;
         }
 		return maxEntry.getKey();
