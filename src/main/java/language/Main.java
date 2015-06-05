@@ -23,6 +23,10 @@ public class Main {
     public static void main(String[] args) throws IOException, FileNotValidException {
         ApplicationContext ctx = SpringApplication.run(Main.class, args);
         Language language = (Language) ctx.getBean("language");
+        LOGGER.info("**************************** WELCOME TO LANGUAGE DETECTOR ****************************");
+        LOGGER.info("You can modify TEXT.txt in ./src/main/resources/textfile manually");
+        LOGGER.info("and Language Detector will detect the language based on existing dictionary files");
+        LOGGER.info("**************************************************************************************");
 
         String languageStr = language.determineLanguage(TEXT_FILE_FOLDER + "/TEXT.txt", DICTIONARY_FILES_FOLDER);
         LOGGER.info("Language is {}", languageStr);
