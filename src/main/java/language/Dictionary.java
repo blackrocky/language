@@ -18,7 +18,6 @@ public class Dictionary {
     private static final Logger LOGGER = LoggerFactory.getLogger(Dictionary.class);
 
     public static final String NON_ALPHABET_AND_SPACE_REGEX = "[^a-zA-Z ]";
-
     private Map<String, Set<String>> dictionary = new ConcurrentHashMap<>();
 
     public Dictionary() {
