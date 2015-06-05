@@ -26,7 +26,7 @@ public class Main {
 //        LOGGER.debug("languageStr = " + languageStr);
 
         //define a folder root
-        String path = "C:/temp/text";
+        String path = "./src/main/resources/textfile";
         Path myDir = Paths.get(path);
 
         try {
