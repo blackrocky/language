@@ -35,4 +35,10 @@ public class LanguageTest extends AbstractJUnitTest {
         String languageStr = language.determineLanguage("./src/test/resources/textfile/TEXT3.txt", "./src/test/resources/dictionaryfiles3");
         assertThat(languageStr, is("ENGLISH"));
     }
+
+    @Test
+    public void should_return_spanish() throws IOException, FileNotValidException {
+        String languageStr = language.determineLanguage("./src/test/resources/textfile/TEXT4.txt", "./src/test/resources/dictionaryfiles4");
+        assertThat(languageStr, is("SPANISH"));
+    }
 }
