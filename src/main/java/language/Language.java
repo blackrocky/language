@@ -96,7 +96,7 @@ public class Language {
                 }
             }
         }
-        LOGGER.debug("languageScore: {}", languageScore);
+        LOGGER.info("Language Scores: {}", languageScore);
         return languageScore;
     }
 }

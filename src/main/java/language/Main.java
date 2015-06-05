@@ -17,18 +17,19 @@ import static java.nio.file.StandardWatchEventKinds.*;
 public class Main {
     private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
+    private static final String DICTIONARY_FILES_FOLDER = "./src/main/resources/dictionaryfiles";
+    private static final String TEXT_FILE_FOLDER = "./src/main/resources/textfile";
+
     public static void main(String[] args) throws IOException, FileNotValidException {
         ApplicationContext ctx = SpringApplication.run(Main.class, args);
         Language language = (Language) ctx.getBean("language");
 
-        String dictionaryFiles = "./src/main/resources/dictionaryfiles";
-//        String languageStr = language.determineLanguage("./src/main/resources/textfile/TEXT.txt", dictionaryFiles);
-//        LOGGER.debug("languageStr = " + languageStr);
+        String languageStr = language.determineLanguage(TEXT_FILE_FOLDER + "/TEXT.txt", DICTIONARY_FILES_FOLDER);
+        LOGGER.info("Language is {}", languageStr);
 
-        //define a folder root
-        String path = "./src/main/resources/textfile";
-        Path myDir = Paths.get(path);
+        Path myDir = Paths.get(TEXT_FILE_FOLDER);
 
+        LOGGER.info("Watching folder {}", TEXT_FILE_FOLDER);
         try {
             while (true) {
                 WatchService watcher = myDir.getFileSystem().newWatchService();
@@ -39,17 +40,17 @@ public class Main {
                 List<WatchEvent<?>> events = watckKey.pollEvents();
                 for (WatchEvent event : events) {
                     if (event.kind() == ENTRY_CREATE) {
-                        LOGGER.debug("Created: " + event.context().toString());
-                        String lang = language.determineLanguage(path + "/" + event.context().toString(), dictionaryFiles);
-                        LOGGER.debug("Language is {}", lang);
+                        LOGGER.info("File created: {}", event.context().toString());
+                        String lang = language.determineLanguage(TEXT_FILE_FOLDER + "/" + event.context().toString(), DICTIONARY_FILES_FOLDER);
+                        LOGGER.info("Language is {}", lang);
                     }
                     if (event.kind() == ENTRY_DELETE) {
-                        LOGGER.debug("Delete: " + event.context().toString());
+                        LOGGER.info("File deleted: {}", event.context().toString());
                     }
                     if (event.kind() == ENTRY_MODIFY) {
-                        LOGGER.debug("Modify: " + event.context().toString());
-                        String lang = language.determineLanguage(path + "/" + event.context().toString(), dictionaryFiles);
-                        LOGGER.debug("Language is {}", lang);
+                        LOGGER.info("File modified: {}", event.context().toString());
+                        String lang = language.determineLanguage(TEXT_FILE_FOLDER + "/" + event.context().toString(), DICTIONARY_FILES_FOLDER);
+                        LOGGER.info("Language is {}", lang);
                     }
                 }
             }
