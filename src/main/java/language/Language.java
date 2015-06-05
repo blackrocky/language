@@ -31,7 +31,7 @@ public class Language {
         return dictionary;
     }
 
-    public String determineLanguage(String pathStr, String pathDictionaryStr) throws IOException, FileNotValidException {
+    public String determineLanguage(String pathStr, String pathDictionaryStr) throws IOException {
         List<LanguageFile> dictionaryFiles = fileReader.readDirectory(pathDictionaryStr);
         for (LanguageFile file : dictionaryFiles) {
             try {
@@ -44,8 +44,13 @@ public class Language {
         return determineLanguage(pathStr, dictionaryFiles);
     }
 
-	public String determineLanguage(String pathStr, List<LanguageFile> dictionaryFiles) throws IOException, FileNotValidException {
-		LanguageFile languageFile = fileReader.readAllLinesWithCharacterCheck(pathStr);
+	public String determineLanguage(String pathStr, List<LanguageFile> dictionaryFiles) throws IOException {
+		LanguageFile languageFile = null;
+		try {
+			languageFile = fileReader.readAllLinesWithCharacterCheck(pathStr);
+		} catch (FileNotValidException e) {
+			return UNKNOWN;
+		}
 
 		Map<String, Integer> languageScore = new HashMap<>();
         for (LanguageFile dictionaryFile : dictionaryFiles) {
