@@ -53,6 +53,7 @@ public class Language {
         File inputFile;
         try {
             inputFile = fileReader.readAllLinesWithCharacterCheck(pathStr);
+            if (inputFile == null) return UNKNOWN;
         } catch (FileNotValidException e) {
             return UNKNOWN;
         }

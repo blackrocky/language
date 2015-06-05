@@ -52,8 +52,15 @@ public class LanguageMockTest {
     }
 
     @Test
-    public void should_handle_io_exception() throws IOException, FileNotValidException {
+    public void should_handle_io_exception() throws IOException {
         when(fileReader.readDirectory(anyString())).thenThrow(new IOException());
+        String languageStr = language.determineLanguage("mock path str", "mock path dictionary str");
+        assertThat(languageStr, is("UNKNOWN"));
+    }
+
+    @Test
+    public void should_handle_null_input_file() throws IOException, FileNotValidException {
+        when(fileReader.readAllLinesWithCharacterCheck(anyString())).thenReturn(null);
         String languageStr = language.determineLanguage("mock path str", "mock path dictionary str");
         assertThat(languageStr, is("UNKNOWN"));
     }
