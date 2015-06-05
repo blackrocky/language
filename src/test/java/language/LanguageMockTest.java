@@ -30,15 +30,15 @@ public class LanguageMockTest {
     }
 
     @Test
-    public void should_handle_exception_in_dictionary() throws IOException, FileNotValidException {
+    public void should_handle_not_valid_exception_in_dictionary() throws IOException, FileNotValidException {
         doThrow(new FileNotValidException("file not valid")).when(dictionary).readAndStore(any(File.class));
 
         List<File> dictionaryFiles = new ArrayList<>();
-        dictionaryFiles.add(new File(Arrays.asList(new String[]{"hello", "world"}), "mock parent1", "mock fileName1"));
-        dictionaryFiles.add(new File(Arrays.asList(new String[]{"hello2", "world2"}), "mock parent2", "mock fileName2"));
+        dictionaryFiles.add(new File(Arrays.asList("hello", "world"), "mock parent1", "mock fileName1"));
+        dictionaryFiles.add(new File(Arrays.asList("hello2", "world2"), "mock parent2", "mock fileName2"));
         when(fileReader.readDirectory(anyString())).thenReturn(dictionaryFiles);
 
-        when(fileReader.readAllLinesWithCharacterCheck(anyString())).thenReturn(new File(Arrays.asList(new String[]{"hello3", "world3"}), "mock parent3", "mock fileName3"));
+        when(fileReader.readAllLinesWithCharacterCheck(anyString())).thenReturn(new File(Arrays.asList("hello3", "world3"), "mock parent3", "mock fileName3"));
 
         String languageStr = language.determineLanguage("mock path str", "mock dictionary str");
         assertThat(languageStr, is("UNKNOWN"));
@@ -51,4 +51,10 @@ public class LanguageMockTest {
         assertThat(languageStr, is("UNKNOWN"));
     }
 
+    @Test
+    public void should_handle_io_exception() throws IOException, FileNotValidException {
+        when(fileReader.readDirectory(anyString())).thenThrow(new IOException());
+        String languageStr = language.determineLanguage("mock path str", "mock path dictionary str");
+        assertThat(languageStr, is("UNKNOWN"));
+    }
 }

@@ -33,20 +33,23 @@ public class Language {
         return dictionary;
     }
 
-    public String determineLanguage(String pathStr, String pathDictionaryStr) throws IOException {
-        List<File> dictionaryFiles = fileReader.readDirectory(pathDictionaryStr);
-        for (File dictionaryFile : dictionaryFiles) {
-            try {
-                dictionary.readAndStore(dictionaryFile);
-            } catch (FileNotValidException e) {
-                LOGGER.error("File not valid for {} - {}", dictionaryFile.getFileName(), e.getMessage());
-                continue;
+    public String determineLanguage(String pathStr, String pathDictionaryStr) {
+        try {
+            List<File> dictionaryFiles = fileReader.readDirectory(pathDictionaryStr);
+            for (File dictionaryFile : dictionaryFiles) {
+                try {
+                    dictionary.readAndStore(dictionaryFile);
+                } catch (FileNotValidException e) {
+                    LOGGER.error("File not valid for {} - {}", dictionaryFile.getFileName(), e.getMessage());
+                }
             }
+            return determineLanguage(pathStr, dictionaryFiles);
+        } catch (IOException ex) {
+            return UNKNOWN;
         }
-        return determineLanguage(pathStr, dictionaryFiles);
     }
 
-    public String determineLanguage(String pathStr, List<File> dictionaryFiles) throws IOException {
+    private String determineLanguage(String pathStr, List<File> dictionaryFiles) throws IOException {
         File inputFile;
         try {
             inputFile = fileReader.readAllLinesWithCharacterCheck(pathStr);
