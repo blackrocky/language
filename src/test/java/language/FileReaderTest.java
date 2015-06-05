@@ -12,7 +12,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.notNullValue;
 
-public class FileReaderTest extends AbstractJUnitTest {
+public class FileReaderTest extends AbstractJUnitSpringTest {
     @Autowired private FileReader fileReader;
 
     @Before

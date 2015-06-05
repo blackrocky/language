@@ -14,7 +14,7 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
-public class DictionaryTest extends AbstractJUnitTest {
+public class DictionaryTest extends AbstractJUnitSpringTest {
     @Autowired private FileReader fileReader;
     @Autowired private Dictionary dictionary;
 

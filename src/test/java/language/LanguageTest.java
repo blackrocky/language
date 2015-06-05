@@ -10,7 +10,7 @@ import java.io.IOException;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
-public class LanguageTest extends AbstractJUnitTest {
+public class LanguageTest extends AbstractJUnitSpringTest {
     @Autowired private Language language;
 
     @Before

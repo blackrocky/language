@@ -6,5 +6,5 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes={Language.class, Dictionary.class, FileReader.class})
-public abstract class AbstractJUnitTest {
+public abstract class AbstractJUnitSpringTest {
 }
