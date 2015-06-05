@@ -32,32 +32,32 @@ public class Language {
     }
 
     public String determineLanguage(String pathStr, String pathDictionaryStr) throws IOException {
-        List<LanguageFile> dictionaryFiles = fileReader.readDirectory(pathDictionaryStr);
-        for (LanguageFile file : dictionaryFiles) {
+        List<File> dictionaryFiles = fileReader.readDirectory(pathDictionaryStr);
+        for (File dictionaryFile : dictionaryFiles) {
             try {
-                dictionary.readAndStore(file);
+                dictionary.readAndStore(dictionaryFile);
             } catch (FileNotValidException e) {
-                LOGGER.error("File not valid for {} - {}", file.getFileName(), e.getMessage());
+                LOGGER.error("File not valid for {} - {}", dictionaryFile.getFileName(), e.getMessage());
                 continue;
             }
         }
         return determineLanguage(pathStr, dictionaryFiles);
     }
 
-	public String determineLanguage(String pathStr, List<LanguageFile> dictionaryFiles) throws IOException {
-		LanguageFile languageFile = null;
+	public String determineLanguage(String pathStr, List<File> dictionaryFiles) throws IOException {
+		File inputFile = null;
 		try {
-			languageFile = fileReader.readAllLinesWithCharacterCheck(pathStr);
+			inputFile = fileReader.readAllLinesWithCharacterCheck(pathStr);
 		} catch (FileNotValidException e) {
 			return UNKNOWN;
 		}
 
 		Map<String, Integer> languageScore = new HashMap<>();
-        for (LanguageFile dictionaryFile : dictionaryFiles) {
+        for (File dictionaryFile : dictionaryFiles) {
             languageScore.put(dictionaryFile.getLanguage(), 0);
         }
 
-		for (String line : languageFile.getLines()) {
+		for (String line : inputFile.getLines()) {
 			LOGGER.debug("line = {}", line);
 
 			Map<String, Set<String>> dictionaryMap = dictionary.getDictionary();

@@ -93,9 +93,9 @@ public class DictionaryTest extends AbstractJUnitSpringTest {
 
     @Test
     public void should_read_and_store_multiple_files_multiple_languages() throws IOException, FileNotValidException {
-        List<LanguageFile> languageFiles = fileReader.readDirectory("./src/test/resources/dictionaryfiles");
-        for (LanguageFile file : languageFiles) {
-            dictionary.readAndStore(file);
+        List<File> dictionaryFiles = fileReader.readDirectory("./src/test/resources/dictionaryfiles");
+        for (File dictionaryFile : dictionaryFiles) {
+            dictionary.readAndStore(dictionaryFile);
         }
         Map<String, Set<String>> dictionaryMap = dictionary.getDictionary();
         assertThat(dictionaryMap, notNullValue());

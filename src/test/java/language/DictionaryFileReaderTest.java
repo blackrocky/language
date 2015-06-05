@@ -12,7 +12,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.notNullValue;
 
-public class FileReaderTest extends AbstractJUnitSpringTest {
+public class DictionaryFileReaderTest extends AbstractJUnitSpringTest {
     @Autowired private FileReader fileReader;
 
     @Before
@@ -26,18 +26,18 @@ public class FileReaderTest extends AbstractJUnitSpringTest {
 
     @Test
     public void should_return_valid_lines_given_valid_file() throws IOException, FileNotValidException {
-        LanguageFile languageFile = fileReader.readAllLinesWithCharacterCheck("./src/test/resources/dictionaryfiles/ENGLISH.2");
-        List<String> lines = languageFile.getLines();
+        File dictionaryFile = fileReader.readAllLinesWithCharacterCheck("./src/test/resources/dictionaryfiles/ENGLISH.2");
+        List<String> lines = dictionaryFile.getLines();
         assertThat(lines.contains("tomorrow, hmm...."), is(true));
         assertThat(lines.contains("I wonder what will happen"), is(true));
 
-        assertThat(languageFile.getFileName(), is("ENGLISH.2"));
+        assertThat(dictionaryFile.getFileName(), is("ENGLISH.2"));
     }
 
     @Test
     public void should_return_list_of_valid_files_in_a_directory() throws IOException {
-        List<LanguageFile> languageFiles = fileReader.readDirectory("./src/test/resources/dictionaryfiles");
-        assertThat(languageFiles, notNullValue());
-        assertThat(languageFiles.size(), is(4));
+        List<File> dictionaryFiles = fileReader.readDirectory("./src/test/resources/dictionaryfiles");
+        assertThat(dictionaryFiles, notNullValue());
+        assertThat(dictionaryFiles.size(), is(4));
     }
 }

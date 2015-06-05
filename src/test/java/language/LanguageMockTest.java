@@ -7,6 +7,9 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -27,9 +30,22 @@ public class LanguageMockTest {
     }
 
     @Test
-    public void should_handle_exception() throws IOException, FileNotValidException {
-        //when(fileReader.readDirectory(anyString())).thenThrow(new IOException("io error"));
-        //doThrow(new FileNotValidException("file not valid")).when(dictionary).readAndStore(any(LanguageFile.class)));
+    public void should_handle_exception_in_dictionary() throws IOException, FileNotValidException {
+        doThrow(new FileNotValidException("file not valid")).when(dictionary).readAndStore(any(File.class));
+
+        List<File> dictionaryFiles = new ArrayList<>();
+        dictionaryFiles.add(new File(Arrays.asList(new String[]{"hello", "world"}), "mock parent1", "mock fileName1"));
+        dictionaryFiles.add(new File(Arrays.asList(new String[]{"hello2", "world2"}), "mock parent2", "mock fileName2"));
+        when(fileReader.readDirectory(anyString())).thenReturn(dictionaryFiles);
+
+        when(fileReader.readAllLinesWithCharacterCheck(anyString())).thenReturn(new File(Arrays.asList(new String[]{"hello3", "world3"}), "mock parent3", "mock fileName3"));
+
+        String languageStr = language.determineLanguage("mock path str", "mock dictionary str");
+        assertThat(languageStr, is("UNKNOWN"));
+    }
+
+    @Test
+    public void should_handle_not_valid_exception_in_file_reader() throws IOException, FileNotValidException {
         when(fileReader.readAllLinesWithCharacterCheck(anyString())).thenThrow(new FileNotValidException("mock file not valid exception"));
         String languageStr = language.determineLanguage("mock path str", "mock path dictionary str");
         assertThat(languageStr, is("UNKNOWN"));

@@ -4,7 +4,6 @@ import language.exception.FileNotValidException;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -20,18 +19,15 @@ public class Dictionary {
 
     public static final String NON_ALPHABET_AND_SPACE_REGEX = "[^a-zA-Z ]";
 
-    private FileReader fileReader;
     private Map<String, Set<String>> dictionary = new ConcurrentHashMap<>();
 
-    @Autowired
-    public Dictionary(FileReader fileReader) {
-        this.fileReader = fileReader;
+    public Dictionary() {
     }
 
-    public void readAndStore(LanguageFile languageFile) throws IOException, FileNotValidException {
-        for (String line : languageFile.getLines()) {
+    public void readAndStore(File dictionaryFile) throws IOException, FileNotValidException {
+        for (String line : dictionaryFile.getLines()) {
             if (StringUtils.isNotBlank(line)) {
-                storeLineInDictionary(line, languageFile.getLanguage());
+                storeLineInDictionary(line, dictionaryFile.getLanguage());
             }
         }
     }

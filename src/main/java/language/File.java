@@ -5,12 +5,12 @@ import org.apache.commons.lang.StringUtils;
 import java.util.List;
 import java.util.Objects;
 
-public final class LanguageFile {
+public final class File {
     private final List<String> lines;
     private final String parent;
     private final String fileName;
 
-    public LanguageFile(final List<String> lines, final String parent, final String fileName) {
+    public File(final List<String> lines, final String parent, final String fileName) {
         this.parent = parent;
         this.lines = lines;
         this.fileName = fileName;
@@ -36,7 +36,7 @@ public final class LanguageFile {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        LanguageFile that = (LanguageFile) o;
+        File that = (File) o;
         return Objects.equals(parent, that.parent) &&
                 Objects.equals(fileName, that.fileName);
     }

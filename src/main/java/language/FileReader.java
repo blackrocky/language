@@ -26,7 +26,7 @@ public class FileReader {
     public FileReader() {
     }
 
-    public List<LanguageFile> readDirectory(String directory) throws IOException {
+    public List<File> readDirectory(String directory) throws IOException {
         List<String> fileNames = new ArrayList<>();
         try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(Paths.get(directory))) {
             for (Path path : directoryStream) {
@@ -37,20 +37,20 @@ public class FileReader {
         }
 
         LOGGER.trace("fileNames: {}", fileNames);
-        List<LanguageFile> languageFiles = new ArrayList<>();
+        List<File> dictionaryFiles = new ArrayList<>();
         for (String fileName : fileNames) {
             try {
-                LanguageFile languageFile = readAllLinesWithCharacterCheck(fileName);
-                languageFiles.add(languageFile);
+                File dictionaryFile = readAllLinesWithCharacterCheck(fileName);
+                dictionaryFiles.add(dictionaryFile);
             } catch (FileNotValidException e) {
                 continue;
             }
         }
 
-        return languageFiles;
+        return dictionaryFiles;
     }
 
-    public LanguageFile readAllLinesWithCharacterCheck(String pathStr) throws IOException, FileNotValidException {
+    public File readAllLinesWithCharacterCheck(String pathStr) throws IOException, FileNotValidException {
         Path path = Paths.get(pathStr);
         List<String> lines = Files.readAllLines(path, Charset.defaultCharset());
         LOGGER.debug("Reading file {}", path.getFileName().toString());
@@ -70,6 +70,6 @@ public class FileReader {
                 }
             }
         }
-        return new LanguageFile(lines, parent, fileName);
+        return new File(lines, parent, fileName);
     }
 }
