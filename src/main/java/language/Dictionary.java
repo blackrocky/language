@@ -1,12 +1,10 @@
 package language;
 
-import language.exception.FileNotValidException;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Map;
@@ -23,7 +21,7 @@ public class Dictionary {
     public Dictionary() {
     }
 
-    public void readAndStore(File dictionaryFile) throws IOException, FileNotValidException {
+    public void readAndStore(File dictionaryFile) {
         for (String line : dictionaryFile.getLines()) {
             if (StringUtils.isNotBlank(line)) {
                 storeLineInDictionary(line, dictionaryFile.getLanguage());

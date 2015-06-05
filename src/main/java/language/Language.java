@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.util.*;
 
-import static language.Dictionary.*;
+import static language.Dictionary.NON_ALPHABET_AND_SPACE_REGEX;
 
 @Component
 public class Language {
@@ -37,11 +37,7 @@ public class Language {
         try {
             List<File> dictionaryFiles = fileReader.readDirectory(pathDictionaryStr);
             for (File dictionaryFile : dictionaryFiles) {
-                try {
-                    dictionary.readAndStore(dictionaryFile);
-                } catch (FileNotValidException e) {
-                    LOGGER.error("File not valid for {} - {}", dictionaryFile.getFileName(), e.getMessage());
-                }
+                dictionary.readAndStore(dictionaryFile);
             }
             return determineLanguage(pathStr, dictionaryFiles);
         } catch (IOException ex) {
