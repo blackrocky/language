@@ -63,7 +63,7 @@ public class Main {
     private static void userInput(Language language) throws IOException {
         BufferedReader br = null;
         try {
-            System.out.println("********************** USER INPUT \"**********************");
+            System.out.println("********************** USER INPUT **********************");
             br = new BufferedReader(new InputStreamReader(System.in));
             System.out.print("Enter text file name (default is " + language.getTextFileName() + "):");
             String textFileName = br.readLine();
@@ -79,6 +79,7 @@ public class Main {
             if (StringUtils.isNotBlank(textFileName)) language.setTextFileName(textFileName);
             if (StringUtils.isNotBlank(textFileFolder)) language.setTextFileFolder(textFileFolder);
             if (StringUtils.isNotBlank(dictionaryFolder)) language.setDictionaryFolder(dictionaryFolder);
+            System.out.println("********************************************************");
         } finally {
             if (br != null) br.close();
         }
