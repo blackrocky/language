@@ -16,29 +16,38 @@ public class LanguageTest extends AbstractJUnitSpringTest {
     @Before
     public void setUp() throws IOException, FileNotValidException {
         language.getDictionary().getDictionary().clear();
+        language.setTextFileFolder("./src/test/resources/textfile");
     }
 
     @Test
     public void should_return_indonesian_given_text() throws IOException, FileNotValidException {
-        String languageStr = language.determineLanguage("./src/test/resources/textfile/TEXT.txt", "./src/test/resources/dictionaryfiles");
+        language.setTextFileName("TEXT.txt");
+        language.setDictionaryFolder("./src/test/resources/dictionaryfiles");
+        String languageStr = language.determineLanguage();
         assertThat(languageStr, is("INDONESIAN"));
     }
 
     @Test
     public void should_return_unknown_given_text_with_all_zero_occurence() throws IOException, FileNotValidException {
-        String languageStr = language.determineLanguage("./src/test/resources/textfile/TEXT2.txt", "./src/test/resources/dictionaryfiles2");
+        language.setTextFileName("TEXT2.txt");
+        language.setDictionaryFolder("./src/test/resources/dictionaryfiles2");
+        String languageStr = language.determineLanguage();
         assertThat(languageStr, is("UNKNOWN"));
     }
 
     @Test
     public void should_return_either_given_same_words() throws IOException, FileNotValidException {
-        String languageStr = language.determineLanguage("./src/test/resources/textfile/TEXT3.txt", "./src/test/resources/dictionaryfiles3");
+        language.setTextFileName("TEXT3.txt");
+        language.setDictionaryFolder("./src/test/resources/dictionaryfiles3");
+        String languageStr = language.determineLanguage();
         assertThat(languageStr, is("ENGLISH"));
     }
 
     @Test
     public void should_return_spanish() throws IOException, FileNotValidException {
-        String languageStr = language.determineLanguage("./src/test/resources/textfile/TEXT4.txt", "./src/test/resources/dictionaryfiles4");
+        language.setTextFileName("TEXT4.txt");
+        language.setDictionaryFolder("./src/test/resources/dictionaryfiles4");
+        String languageStr = language.determineLanguage();
         assertThat(languageStr, is("SPANISH"));
     }
 }

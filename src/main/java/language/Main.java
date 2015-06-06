@@ -6,59 +6,51 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.PropertySource;
 
 import java.io.IOException;
 import java.nio.file.*;
 import java.util.List;
-import static java.nio.file.StandardWatchEventKinds.*;
 
+import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
 
 @SpringBootApplication
+@PropertySource("language.properties")
 public class Main {
     private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
-
-    private static final String DICTIONARY_FILES_FOLDER = "./src/main/resources/dictionaryfiles";
-    private static final String TEXT_FILE_FOLDER = "./src/main/resources/textfile";
 
     public static void main(String[] args) throws IOException, FileNotValidException {
         ApplicationContext ctx = SpringApplication.run(Main.class, args);
         Language language = (Language) ctx.getBean("language");
         LOGGER.info("**************************** WELCOME TO LANGUAGE DETECTOR ****************************");
-        LOGGER.info("You can modify TEXT.txt in ./src/main/resources/textfile manually");
-        LOGGER.info("and Language Detector will detect the language based on existing dictionary files");
+        LOGGER.info("You can modify {} in {} manually", language.getTextFileName(), language.getTextFileFolder());
+        LOGGER.info("and Language Detector will detect the language");
+        LOGGER.info("based on existing dictionary files in {}", language.getDictionaryFolder());
         LOGGER.info("**************************************************************************************");
 
-        String languageStr = language.determineLanguage(TEXT_FILE_FOLDER + "/TEXT.txt", DICTIONARY_FILES_FOLDER);
+        String languageStr = language.determineLanguage();
         LOGGER.info("Language is {}", languageStr);
 
-        Path myDir = Paths.get(TEXT_FILE_FOLDER);
+        Path myDir = Paths.get(language.getTextFileFolder());
 
-        LOGGER.info("Watching folder {}", TEXT_FILE_FOLDER);
+        LOGGER.info("Watching folder {}", language.getTextFileFolder());
         try {
             while (true) {
                 WatchService watcher = myDir.getFileSystem().newWatchService();
-                myDir.register(watcher, ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY);
+                myDir.register(watcher, ENTRY_MODIFY);
 
                 WatchKey watckKey = watcher.take();
 
                 List<WatchEvent<?>> events = watckKey.pollEvents();
                 for (WatchEvent event : events) {
-                    if (event.kind() == ENTRY_CREATE) {
-                        LOGGER.info("File created: {}", event.context().toString());
-                        String lang = language.determineLanguage(TEXT_FILE_FOLDER + "/" + event.context().toString(), DICTIONARY_FILES_FOLDER);
-                        LOGGER.info("Language is {}", lang);
-                    }
-                    if (event.kind() == ENTRY_DELETE) {
-                        LOGGER.info("File deleted: {}", event.context().toString());
-                    }
                     if (event.kind() == ENTRY_MODIFY) {
                         LOGGER.info("File modified: {}", event.context().toString());
-                        String lang = language.determineLanguage(TEXT_FILE_FOLDER + "/" + event.context().toString(), DICTIONARY_FILES_FOLDER);
+                        String lang = language.determineLanguage();
                         LOGGER.info("Language is {}", lang);
                     }
                 }
             }
-        } catch (Exception e) {
+        } catch (InterruptedException e) {
             LOGGER.error("Error: ", e);
         }
     }

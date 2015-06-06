@@ -5,6 +5,7 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -19,27 +20,36 @@ public class Language {
     private static final String UNKNOWN = "UNKNOWN";
     private FileReader fileReader;
     private Dictionary dictionary;
+    private String textFileName;
+    private String textFileFolder;
+    private String dictionaryFolder;
 
     public Language() {
     }
 
     @Autowired
-    public Language(FileReader fileReader, Dictionary dictionary) {
+    public Language(FileReader fileReader, Dictionary dictionary,
+                    @Value("${text.file.name}") String textFileName,
+                    @Value("${text.file.folder}") String textFileFolder,
+                    @Value("${dictionary.folder}") String dictionaryFolder) {
         this.fileReader = fileReader;
         this.dictionary = dictionary;
+        this.textFileName = textFileName;
+        this.textFileFolder = textFileFolder;
+        this.dictionaryFolder = dictionaryFolder;
     }
 
-    public Dictionary getDictionary() {
-        return dictionary;
-    }
-
-    public String determineLanguage(String pathStr, String pathDictionaryStr) {
+    public String determineLanguage() {
+        String pathStr = textFileFolder + "/" + textFileName;
+        String pathDictionaryStr = dictionaryFolder;
         try {
             List<File> dictionaryFiles = fileReader.readDirectory(pathDictionaryStr);
             for (File dictionaryFile : dictionaryFiles) {
                 dictionary.readAndStore(dictionaryFile);
             }
-            return determineLanguage(pathStr, dictionaryFiles);
+            String language = determineLanguage(pathStr, dictionaryFiles);;
+            LOGGER.debug("Language is: {}", language);
+            return language;
         } catch (IOException ex) {
             return UNKNOWN;
         }
@@ -98,5 +108,34 @@ public class Language {
         }
         LOGGER.info("Language Scores: {}", languageScore);
         return languageScore;
+    }
+
+    public String getTextFileName() {
+        return textFileName;
+    }
+
+    public String getTextFileFolder() {
+        return textFileFolder;
+    }
+
+    public String getDictionaryFolder() {
+        return dictionaryFolder;
+    }
+
+    public Dictionary getDictionary() {
+        return dictionary;
+    }
+
+    // for testing
+    public void setTextFileName(String textFileName) {
+        this.textFileName = textFileName;
+    }
+
+    public void setTextFileFolder(String textFileFolder) {
+        this.textFileFolder = textFileFolder;
+    }
+
+    public void setDictionaryFolder(String dictionaryFolder) {
+        this.dictionaryFolder = dictionaryFolder;
     }
 }

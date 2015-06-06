@@ -21,27 +21,27 @@ public class LanguageMockTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        language = new Language(fileReader, dictionary);
+        language = new Language(fileReader, dictionary, "mock text file name", "mock text file folder", "mock dictionary folder");
     }
 
     @Test
     public void should_handle_not_valid_exception_in_file_reader() throws IOException, FileNotValidException {
         when(fileReader.readAllLinesWithCharacterCheck(anyString())).thenThrow(new FileNotValidException("mock file not valid exception"));
-        String languageStr = language.determineLanguage("mock path str", "mock path dictionary str");
+        String languageStr = language.determineLanguage();
         assertThat(languageStr, is("UNKNOWN"));
     }
 
     @Test
     public void should_handle_io_exception() throws IOException {
         when(fileReader.readDirectory(anyString())).thenThrow(new IOException());
-        String languageStr = language.determineLanguage("mock path str", "mock path dictionary str");
+        String languageStr = language.determineLanguage();
         assertThat(languageStr, is("UNKNOWN"));
     }
 
     @Test
     public void should_handle_null_input_file() throws IOException, FileNotValidException {
         when(fileReader.readAllLinesWithCharacterCheck(anyString())).thenReturn(null);
-        String languageStr = language.determineLanguage("mock path str", "mock path dictionary str");
+        String languageStr = language.determineLanguage();
         assertThat(languageStr, is("UNKNOWN"));
     }
 }
