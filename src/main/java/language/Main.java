@@ -63,16 +63,17 @@ public class Main {
     private static void userInput(Language language) throws IOException {
         BufferedReader br = null;
         try {
+            System.out.println("********************** USER INPUT \"**********************");
             br = new BufferedReader(new InputStreamReader(System.in));
-            System.out.print("Text file name (default is " + language.getTextFileName() + "):");
+            System.out.print("Enter text file name (default is " + language.getTextFileName() + "):");
             String textFileName = br.readLine();
 
             br = new BufferedReader(new InputStreamReader(System.in));
-            System.out.print("Text file folder (default is " + language.getTextFileFolder() + "):");
+            System.out.print("Enter text file folder (default is " + language.getTextFileFolder() + "):");
             String textFileFolder = br.readLine();
 
             br = new BufferedReader(new InputStreamReader(System.in));
-            System.out.print("Dictionary folder (default is " + language.getDictionaryFolder() + "):");
+            System.out.print("Enter dictionary folder (default is " + language.getDictionaryFolder() + "):");
             String dictionaryFolder = br.readLine();
 
             if (StringUtils.isNotBlank(textFileName)) language.setTextFileName(textFileName);
