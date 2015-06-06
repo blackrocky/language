@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.PropertySource;
 
 import java.io.IOException;
 import java.nio.file.*;
@@ -15,7 +14,6 @@ import java.util.List;
 import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
 
 @SpringBootApplication
-@PropertySource("language.properties")
 public class Main {
     private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 

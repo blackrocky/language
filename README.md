@@ -24,5 +24,5 @@ language.
 - mvn spring-boot:run
 
 ## JAR Package
-- mvn clean compile package
+- mvn clean package
 - java -jar target/language-1.0.0.jar
