@@ -16,7 +16,7 @@ public final class File {
         this.fileName = fileName;
     }
 
-    public String getParent() {
+    public final String getParent() {
         return parent;
     }
 

@@ -22,11 +22,11 @@ public class Dictionary {
     }
 
     public void readAndStore(File dictionaryFile) {
-        for (String line : dictionaryFile.getLines()) {
+        dictionaryFile.getLines().forEach(line -> {
             if (StringUtils.isNotBlank(line)) {
                 storeLineInDictionary(line, dictionaryFile.getLanguage());
             }
-        }
+        });
     }
 
     public void storeLineInDictionary(String line, String language) {
@@ -36,6 +36,8 @@ public class Dictionary {
         line = StringUtils.lowerCase(line.replaceAll(Dictionary.NON_ALPHABET_AND_SPACE_REGEX, ""));
 
         String[] wordArray = StringUtils.split(line);
+        if (wordArray == null) return;
+
         Set<String> newWords = new HashSet<>(Arrays.asList(wordArray));
 
         Set<String> currentWords = dictionary.get(language);

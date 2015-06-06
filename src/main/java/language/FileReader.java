@@ -29,23 +29,20 @@ public class FileReader {
     public List<File> readDirectory(String directory) throws IOException {
         List<String> fileNames = new ArrayList<>();
         try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(Paths.get(directory))) {
-            for (Path path : directoryStream) {
-                fileNames.add(path.toString());
-            }
-        } catch (IOException ex) {
-            throw ex;
+            directoryStream.forEach(path -> fileNames.add(path.toString()));
         }
 
         LOGGER.trace("fileNames: {}", fileNames);
         List<File> dictionaryFiles = new ArrayList<>();
-        for (String fileName : fileNames) {
+
+        fileNames.forEach(fileName -> {
             try {
-                File dictionaryFile = readAllLinesWithCharacterCheck(fileName);
-                dictionaryFiles.add(dictionaryFile);
-            } catch (FileNotValidException e) {
-                continue;
+                File file = readAllLinesWithCharacterCheck(fileName);
+                dictionaryFiles.add(file);
+            } catch (FileNotValidException | IOException e) {
+                // keep going
             }
-        }
+        });
 
         return dictionaryFiles;
     }
@@ -58,16 +55,15 @@ public class FileReader {
         String parent = path.getParent().toString();
         String fileName = path.getFileName().toString();
         Pattern pattern = Pattern.compile(LEGAL_CHARACTERS_REGEX);
+
         for (String line : lines) {
             Matcher matcher = pattern.matcher(line);
             LOGGER.trace("line = {}", line);
             LOGGER.trace("matches {}", matcher.matches());
 
-            if (StringUtils.isNotBlank(line)) {
-                if (!matcher.matches()) {
-                    LOGGER.error("File {} has illegal character(s)", path.getFileName().toString());
-                    throw new FileNotValidException("File " + pathStr + " contains illegal characters");
-                }
+            if (StringUtils.isNotBlank(line) && !matcher.matches()) {
+                LOGGER.error("File {} has illegal character(s)", path.getFileName().toString());
+                throw new FileNotValidException("File " + pathStr + " contains illegal characters");
             }
         }
         return new File(lines, parent, fileName);

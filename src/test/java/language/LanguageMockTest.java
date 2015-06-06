@@ -32,8 +32,15 @@ public class LanguageMockTest {
     }
 
     @Test
-    public void should_handle_io_exception() throws IOException {
+    public void should_handle_filereader_read_directory_io_exception() throws IOException {
         when(fileReader.readDirectory(anyString())).thenThrow(new IOException());
+        String languageStr = language.determineLanguage();
+        assertThat(languageStr, is("UNKNOWN"));
+    }
+
+    @Test
+    public void should_handles_filereader_read_all_lines_io_exception() throws IOException, FileNotValidException {
+        when(fileReader.readAllLinesWithCharacterCheck(anyString())).thenThrow(new IOException());
         String languageStr = language.determineLanguage();
         assertThat(languageStr, is("UNKNOWN"));
     }
@@ -43,5 +50,16 @@ public class LanguageMockTest {
         when(fileReader.readAllLinesWithCharacterCheck(anyString())).thenReturn(null);
         String languageStr = language.determineLanguage();
         assertThat(languageStr, is("UNKNOWN"));
+    }
+
+    @Test
+    public void should_set_field_variables_properly() {
+        language.setDictionaryFolder("mock dictionary folder");
+        language.setTextFileName("mock text file name");
+        language.setTextFileFolder("mock text file folder");
+        assertThat(language.getDictionaryFolder(), is("mock dictionary folder"));
+        assertThat(language.getTextFileName(), is("mock text file name"));
+        assertThat(language.getTextFileFolder(), is("mock text file folder"));
+        assertThat(language.getDictionary(), is(dictionary));
     }
 }
