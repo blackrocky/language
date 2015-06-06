@@ -47,7 +47,7 @@ public class Language {
             for (File dictionaryFile : dictionaryFiles) {
                 dictionary.readAndStore(dictionaryFile);
             }
-            String language = determineLanguage(pathStr, dictionaryFiles);;
+            String language = determineLanguage(pathStr, dictionaryFiles);
             LOGGER.debug("Language is: {}", language);
             return language;
         } catch (IOException ex) {
@@ -126,7 +126,6 @@ public class Language {
         return dictionary;
     }
 
-    // for testing
     public void setTextFileName(String textFileName) {
         this.textFileName = textFileName;
     }
