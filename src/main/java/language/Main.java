@@ -47,6 +47,7 @@ public class Main {
                 while (true) {
                     WatchService watcher = myDir.getFileSystem().newWatchService();
                     myDir.register(watcher, ENTRY_MODIFY);
+                    validUserInput = true;
 
                     WatchKey watchKey = watcher.take();
 
@@ -58,7 +59,6 @@ public class Main {
                             LOGGER.info("Language is {}", lang);
                         }
                     }
-                    validUserInput = true;
                 }
             } catch (NoSuchFileException e) {
                 LOGGER.error("Invalid folder", e);
