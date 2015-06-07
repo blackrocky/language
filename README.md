@@ -23,7 +23,11 @@ language.
 # Usage
 ## Spring Boot
 - mvn spring-boot:run
+- Enter input: text file name, text file folder and dictionary folder
+- Modify text file and Language Detector program will detect language based on files in dictionary folder
 
 ## JAR Package
 - mvn clean package
 - java -jar target/language-1.0.0.jar
+- Enter input: text file name, text file folder and dictionary folder
+- Modify text file and Language Detector program will detect language based on files in dictionary folder

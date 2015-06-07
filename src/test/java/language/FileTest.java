@@ -28,9 +28,20 @@ public class FileTest {
     }
 
     @Test
-    public void should_be_equal_file() {
+    public void should_be_equal_files() {
         File file2 = new File(Arrays.asList("hello", "world"), "directory", "english");
-        assertThat(file, is(file2));
+        assertThat(file.equals(file2), is(true));
     }
 
+    @Test
+    public void should_not_be_equal_files_given_different_parents() {
+        File file2 = new File(Arrays.asList("hello", "world"), "directory1", "english");
+        assertThat(file.equals(file2) , is(false));
+    }
+
+    @Test
+    public void should_not_be_equal_files_given_different_filename() {
+        File file2 = new File(Arrays.asList("hello", "world"), "directory2", "english1");
+        assertThat(file.equals(file2) , is(false));
+    }
 }

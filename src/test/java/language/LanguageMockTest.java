@@ -39,7 +39,7 @@ public class LanguageMockTest {
     }
 
     @Test
-    public void should_handles_filereader_read_all_lines_io_exception() throws IOException, FileNotValidException {
+    public void should_handle_filereader_read_all_lines_io_exception() throws IOException, FileNotValidException {
         when(fileReader.readAllLinesWithCharacterCheck(anyString())).thenThrow(new IOException());
         String languageStr = language.determineLanguage();
         assertThat(languageStr, is("UNKNOWN"));
