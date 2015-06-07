@@ -9,6 +9,7 @@ import org.springframework.context.ApplicationContext;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.file.*;
 import java.util.List;
@@ -22,7 +23,10 @@ public class Main {
     public static void main(String[] args) {
         ApplicationContext ctx = SpringApplication.run(Main.class, args);
         Language language = (Language) ctx.getBean("language");
+        run(language);
+    }
 
+    static void run(Language language) {
         String defaultTextFileName = language.getTextFileName();
         String defaultTextFileFolder = language.getTextFileFolder();
         String defaultDictionaryFolder = language.getDictionaryFolder();
@@ -30,7 +34,7 @@ public class Main {
         boolean validUserInput = false;
         while (!validUserInput) {
             try {
-                userInput(language, defaultTextFileName, defaultTextFileFolder, defaultDictionaryFolder);
+                userInput(language, defaultTextFileName, defaultTextFileFolder, defaultDictionaryFolder, System.in);
 
                 LOGGER.info("**************************** WELCOME TO LANGUAGE DETECTOR ****************************");
                 LOGGER.info("You can modify {} in {} manually", language.getTextFileName(), language.getTextFileFolder());
@@ -68,18 +72,15 @@ public class Main {
         }
     }
 
-    private static void userInput(Language language, String defaultTextFileName, String defaultTextFileFolder, String defaultDictionaryFolder) throws IOException {
-        BufferedReader br;
+    static void userInput(Language language, String defaultTextFileName, String defaultTextFileFolder, String defaultDictionaryFolder, InputStream in) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(in));
         System.out.println("********************** USER INPUT **********************");
-        br = new BufferedReader(new InputStreamReader(System.in));
         System.out.print("Enter text file name (default is " + defaultTextFileName + "):");
         String textFileName = br.readLine();
 
-        br = new BufferedReader(new InputStreamReader(System.in));
         System.out.print("Enter text file folder (default is " + defaultTextFileFolder + "):");
         String textFileFolder = br.readLine();
 
-        br = new BufferedReader(new InputStreamReader(System.in));
         System.out.print("Enter dictionary folder (default is " + defaultDictionaryFolder + "):");
         String dictionaryFolder = br.readLine();
 
