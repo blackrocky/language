@@ -45,7 +45,7 @@ public class DictionaryTest extends AbstractJUnitSpringTest {
         assertThat(dictionaryMap.get(ENGLISH), notNullValue());
         assertThat(dictionaryMap.get(ENGLISH).size(), is(2));
         assertThat(dictionaryMap.get(ENGLISH).contains("hello"), is(true));
-        assertThat(dictionaryMap.get(ENGLISH).contains("world") , is(true));
+        assertThat(dictionaryMap.get(ENGLISH).contains("world"), is(true));
     }
 
     @Test

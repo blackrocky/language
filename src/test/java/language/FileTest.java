@@ -16,6 +16,7 @@ public class FileTest {
     public void setUp() {
         file = new File(Arrays.asList("hello", "world"), "directory", "english");
     }
+
     @Test
     public void should_return_correct_field_variables_for_file() {
         assertThat(file.getParent(), is("directory"));
