@@ -19,69 +19,73 @@ import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
 public class Main {
     private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
-    public static void main(String[] args)  {
+    public static void main(String[] args) {
         ApplicationContext ctx = SpringApplication.run(Main.class, args);
         Language language = (Language) ctx.getBean("language");
 
-        try {
-            userInput(language);
+        String defaultTextFileName = language.getTextFileName();
+        String defaultTextFileFolder = language.getTextFileFolder();
+        String defaultDictionaryFolder = language.getDictionaryFolder();
 
-            LOGGER.info("**************************** WELCOME TO LANGUAGE DETECTOR ****************************");
-            LOGGER.info("You can modify {} in {} manually", language.getTextFileName(), language.getTextFileFolder());
-            LOGGER.info("and Language Detector will detect the language");
-            LOGGER.info("based on existing dictionary files in {}", language.getDictionaryFolder());
-            LOGGER.info("**************************************************************************************");
+        boolean validUserInput = false;
+        while (!validUserInput) {
+            try {
+                userInput(language, defaultTextFileName, defaultTextFileFolder, defaultDictionaryFolder);
 
-            String languageStr = language.determineLanguage();
-            LOGGER.info("Language is {}", languageStr);
-            Path myDir = Paths.get(language.getTextFileFolder());
+                LOGGER.info("**************************** WELCOME TO LANGUAGE DETECTOR ****************************");
+                LOGGER.info("You can modify {} in {} manually", language.getTextFileName(), language.getTextFileFolder());
+                LOGGER.info("and Language Detector will detect the language");
+                LOGGER.info("based on existing dictionary files in {}", language.getDictionaryFolder());
+                LOGGER.info("**************************************************************************************");
 
-            LOGGER.info("Watching folder {}", language.getTextFileFolder());
+                String languageStr = language.determineLanguage();
+                LOGGER.info("Language is {}", languageStr);
+                Path myDir = Paths.get(language.getTextFileFolder());
 
-            while (true) {
-                WatchService watcher = myDir.getFileSystem().newWatchService();
-                myDir.register(watcher, ENTRY_MODIFY);
+                LOGGER.info("Watching folder {}", language.getTextFileFolder());
 
-                WatchKey watchKey = watcher.take();
+                while (true) {
+                    WatchService watcher = myDir.getFileSystem().newWatchService();
+                    myDir.register(watcher, ENTRY_MODIFY);
 
-                List<WatchEvent<?>> events = watchKey.pollEvents();
-                for (WatchEvent event : events) {
-                    if (event.kind() == ENTRY_MODIFY) {
-                        LOGGER.info("File modified: {}", event.context().toString());
-                        String lang = language.determineLanguage();
-                        LOGGER.info("Language is {}", lang);
+                    WatchKey watchKey = watcher.take();
+
+                    List<WatchEvent<?>> events = watchKey.pollEvents();
+                    for (WatchEvent event : events) {
+                        if (event.kind() == ENTRY_MODIFY) {
+                            LOGGER.info("File modified: {}", event.context().toString());
+                            String lang = language.determineLanguage();
+                            LOGGER.info("Language is {}", lang);
+                        }
                     }
+                    validUserInput = true;
                 }
+            } catch (NoSuchFileException e) {
+                LOGGER.error("Invalid folder", e);
+            } catch (InterruptedException | IOException e) {
+                LOGGER.error("Error: ", e);
             }
-        } catch (NoSuchFileException e) {
-            LOGGER.error("Invalid folder", e);
-        } catch (InterruptedException | IOException e) {
-            LOGGER.error("Error: ", e);
         }
     }
 
-    private static void userInput(Language language) throws IOException {
-        BufferedReader br = null;
-        try {
-            System.out.println("********************** USER INPUT **********************");
-            br = new BufferedReader(new InputStreamReader(System.in));
-            System.out.print("Enter text file name (default is " + language.getTextFileName() + "):");
-            String textFileName = br.readLine();
+    private static void userInput(Language language, String defaultTextFileName, String defaultTextFileFolder, String defaultDictionaryFolder) throws IOException {
+        BufferedReader br;
+        System.out.println("********************** USER INPUT **********************");
+        br = new BufferedReader(new InputStreamReader(System.in));
+        System.out.print("Enter text file name (default is " + defaultTextFileName + "):");
+        String textFileName = br.readLine();
 
-            br = new BufferedReader(new InputStreamReader(System.in));
-            System.out.print("Enter text file folder (default is " + language.getTextFileFolder() + "):");
-            String textFileFolder = br.readLine();
+        br = new BufferedReader(new InputStreamReader(System.in));
+        System.out.print("Enter text file folder (default is " + defaultTextFileFolder + "):");
+        String textFileFolder = br.readLine();
 
-            br = new BufferedReader(new InputStreamReader(System.in));
-            System.out.print("Enter dictionary folder (default is " + language.getDictionaryFolder() + "):");
-            String dictionaryFolder = br.readLine();
+        br = new BufferedReader(new InputStreamReader(System.in));
+        System.out.print("Enter dictionary folder (default is " + defaultDictionaryFolder + "):");
+        String dictionaryFolder = br.readLine();
 
-            if (StringUtils.isNotBlank(textFileName)) language.setTextFileName(textFileName);
-            if (StringUtils.isNotBlank(textFileFolder)) language.setTextFileFolder(textFileFolder);
-            if (StringUtils.isNotBlank(dictionaryFolder)) language.setDictionaryFolder(dictionaryFolder);
-            System.out.println("********************************************************");
-        } finally {
-            if (br != null) br.close();
-        }
+        language.setTextFileName(StringUtils.isBlank(textFileName) ? defaultTextFileName : textFileName);
+        language.setTextFileFolder(StringUtils.isBlank(textFileFolder) ? defaultTextFileFolder : textFileFolder);
+        language.setDictionaryFolder(StringUtils.isBlank(dictionaryFolder) ? defaultDictionaryFolder : dictionaryFolder);
+        System.out.println("********************************************************");
     }
 }
