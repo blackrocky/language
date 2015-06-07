@@ -44,9 +44,8 @@ public class Language {
         String pathDictionaryStr = dictionaryFolder;
         try {
             List<File> dictionaryFiles = fileReader.readDirectory(pathDictionaryStr);
-            for (File dictionaryFile : dictionaryFiles) {
-                dictionary.readAndStore(dictionaryFile);
-            }
+            dictionaryFiles.forEach(dictionaryFile -> dictionary.readAndStore(dictionaryFile));
+
             String language = determineLanguage(pathStr, dictionaryFiles);
             LOGGER.debug("Language is: {}", language);
             return language;
@@ -81,31 +80,29 @@ public class Language {
         return maxEntry.getKey();
     }
 
-    private Map<String, Integer> calculateScore(List<File> dictionaryFiles, File inputFile) {
+    Map<String, Integer> calculateScore(List<File> dictionaryFiles, File inputFile) {
         Map<String, Integer> languageScore = new HashMap<>();
-        for (File dictionaryFile : dictionaryFiles) {
-            languageScore.put(dictionaryFile.getLanguage(), 0);
-        }
+        dictionaryFiles.forEach(dictionaryFile -> languageScore.put(dictionaryFile.getLanguage(), 0));
 
-        for (String line : inputFile.getLines()) {
+        Set<String> allWords = new HashSet<>();
+        inputFile.getLines().forEach(line -> {
             LOGGER.debug("line = {}", line);
+            line = StringUtils.lowerCase(line.replaceAll(NON_ALPHABET_AND_SPACE_REGEX, ""));
+            String[] wordArray = StringUtils.split(line);
+            allWords.addAll(Arrays.asList(wordArray));
+        });
 
-            Map<String, Set<String>> dictionaryMap = dictionary.getDictionary();
-            for (Map.Entry<String, Set<String>> entry : dictionaryMap.entrySet()) {
-                LOGGER.debug("Checking {}", entry.getKey());
-                Set<String> dictionaryWords = entry.getValue();
+        dictionary.getDictionary().forEach((language, dictionaryWords) -> {
+            LOGGER.debug("Checking {}", language);
 
-                line = StringUtils.lowerCase(line.replaceAll(NON_ALPHABET_AND_SPACE_REGEX, ""));
-                String[] wordArray = StringUtils.split(line);
-                Set<String> words = new HashSet<>(Arrays.asList(wordArray));
-
-                for (String word : words) {
-                    if (dictionaryWords.contains(word)) {
-                        languageScore.put(entry.getKey(), languageScore.get(entry.getKey()) + 1);
-                    }
+            allWords.forEach(word -> {
+                if (dictionaryWords.contains(word)) {
+                    LOGGER.info("dictionary contains word {} for language {}", word, language);
+                    languageScore.put(language, languageScore.get(language) + 1);
                 }
-            }
-        }
+            });
+        });
+
         LOGGER.info("Language Scores: {}", languageScore);
         return languageScore;
     }
