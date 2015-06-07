@@ -97,7 +97,7 @@ public class Language {
 
             allWords.forEach(word -> {
                 if (dictionaryWords.contains(word)) {
-                    LOGGER.info("dictionary contains word {} for language {}", word, language);
+                    LOGGER.debug("dictionary contains word {} for language {}", word, language);
                     languageScore.put(language, languageScore.get(language) + 1);
                 }
             });
