@@ -19,8 +19,8 @@ public class DictionaryFileReaderTest extends AbstractJUnitSpringTest {
     public void setUp() {
     }
 
-    @Test(expected = FileNotValidException.class)
-    public void should_throw_exception_given_file_with_illegal_characters() throws IOException, FileNotValidException {
+    @Test
+    public void should_not_throw_exception_given_file_with_illegal_characters() throws IOException, FileNotValidException {
         fileReader.readAllLinesWithCharacterCheck("./src/test/resources/dictionaryfiles/ENGLISH.1");
     }
 
@@ -38,6 +38,6 @@ public class DictionaryFileReaderTest extends AbstractJUnitSpringTest {
     public void should_return_list_of_valid_files_in_a_directory() throws IOException {
         List<File> dictionaryFiles = fileReader.readDirectory("./src/test/resources/dictionaryfiles");
         assertThat(dictionaryFiles, notNullValue());
-        assertThat(dictionaryFiles.size(), is(4));
+        assertThat(dictionaryFiles.size(), is(5));
     }
 }

@@ -103,7 +103,7 @@ public class DictionaryTest extends AbstractJUnitSpringTest {
 
         Set<String> englishWords = dictionaryMap.get(ENGLISH);
         assertThat(englishWords, notNullValue());
-        assertThat(englishWords.size(), is(92));
+        assertThat(englishWords.size(), is(93));
         assertThat(englishWords.contains("i"), is(true));
         assertThat(englishWords.contains("wonder"), is(true));
         assertThat(englishWords.contains("what"), is(true));
@@ -124,8 +124,8 @@ public class DictionaryTest extends AbstractJUnitSpringTest {
         assertThat(indonesianWords.contains("kembari"), is(true));
     }
 
-    @Test(expected = FileNotValidException.class)
-    public void should_return_exception_given_file_with_illegal_character() throws IOException, FileNotValidException {
+    @Test
+    public void should_not_return_exception_given_file_with_illegal_character() throws IOException, FileNotValidException {
         dictionary.readAndStore(fileReader.readAllLinesWithCharacterCheck("./src/test/resources/dictionaryfiles/ENGLISH.1"));
     }
 }

@@ -50,4 +50,12 @@ public class LanguageTest extends AbstractJUnitSpringTest {
         String languageStr = language.determineLanguage();
         assertThat(languageStr, is("SPANISH"));
     }
+
+    @Test
+    public void should_return_english_ignoring_hyphen() throws IOException, FileNotValidException {
+        language.setTextFileName("TEXT5.txt");
+        language.setDictionaryFolder("./src/test/resources/dictionaryfiles5");
+        String languageStr = language.determineLanguage();
+        assertThat(languageStr, is("ENGLISH"));
+    }
 }

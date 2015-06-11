@@ -63,7 +63,7 @@ public class FileReader {
 
             if (StringUtils.isNotBlank(line) && !matcher.matches()) {
                 LOGGER.error("File {} has illegal character(s)", path.getFileName().toString());
-                throw new FileNotValidException("File " + pathStr + " contains illegal characters");
+                //throw new FileNotValidException("File " + pathStr + " contains illegal characters");
             }
         }
         return new File(lines, parent, fileName);
