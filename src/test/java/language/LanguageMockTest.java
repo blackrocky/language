@@ -15,7 +15,7 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 public class LanguageMockTest {
-    @Mock private Language language;
+    private Language language;
     @Mock private FileReader fileReader;
     @Mock private Dictionary dictionary;
 
