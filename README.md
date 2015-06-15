@@ -10,7 +10,7 @@ language.
 
 # Assumptions
 - Known language files have the language name as the filename and numbers as the extension eg. ENGLISH.1 ENGLISH.2 FRENCH.1 FRENCH.2 would have 2 languages: ENGLISH and FRENCH
-- If characters other than allowed ones exist, program will show error message saying illegal character exists, and will return UNKNOWN
+- If characters other than allowed ones exist, program will show error message saying illegal character exists, and will continue to the next line
 - If there is not enough data to determine the language, then UNKNOWN will be returned
 - If the program determines that text could be in either language, for example "ENGLISH" or "FRENCH", then it will pick either one with no guaranteed order
 - Dictionary is fixed once the program runs, but TEXT.txt can change so the the program can detect the language in the text file
